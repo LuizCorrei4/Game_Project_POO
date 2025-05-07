@@ -15,6 +15,8 @@ public class Main {
                 tTela.createBufferStrategy(2);
                 // Inicia o loop principal de atualização e desenho
                 tTela.go();
+                // aoba
+                // ffwdwdwwfw
             }
         });
     }
