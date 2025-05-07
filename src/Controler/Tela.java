@@ -43,6 +43,8 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     private int cameraColuna = 0;
 
     public Tela() {
+
+
         Desenho.setCenario(this);
         initComponents();
         this.addMouseListener(this);
@@ -56,8 +58,10 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
         faseAtual = new ArrayList<Personagem>();
 
+
+
         /*Cria faseAtual adiciona personagens*/
-        hero = new Hero("Robbo.png");
+        hero = new Hero("player1_right2.png");
         hero.setPosicao(0, 7);
         this.addPersonagem(hero);
         this.atualizaCamera();
@@ -116,9 +120,9 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         Graphics g = this.getBufferStrategy().getDrawGraphics();
         /*Criamos um contexto gráfico*/
         g2 = g.create(getInsets().left, getInsets().top, getWidth() - getInsets().right, getHeight() - getInsets().top);
-        /**
-         * ***********Desenha cenário de fundo*************
-         */
+        
+        // **********Desenha cenário de fundo*************
+
         for (int i = 0; i < Consts.RES; i++) {
             for (int j = 0; j < Consts.RES; j++) {
                 int mapaLinha = cameraLinha + i;
@@ -127,7 +131,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                 if (mapaLinha < Consts.MUNDO_ALTURA && mapaColuna < Consts.MUNDO_LARGURA) {
                     try {
                         Image newImage = Toolkit.getDefaultToolkit().getImage(
-                                new java.io.File(".").getCanonicalPath() + Consts.PATH + "blackTile.png");
+                                new java.io.File(".").getCanonicalPath() + Consts.PATH + "background_space.png");
                         g2.drawImage(newImage,
                                 j * Consts.CELL_SIDE, i * Consts.CELL_SIDE,
                                 Consts.CELL_SIDE, Consts.CELL_SIDE, null);
@@ -149,7 +153,8 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         }
     }
 
-    private void atualizaCamera() {
+    private void atualizaCamera()
+    {
         int linha = hero.getPosicao().getLinha();
         int coluna = hero.getPosicao().getColuna();
 
