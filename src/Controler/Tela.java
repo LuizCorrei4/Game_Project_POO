@@ -1,14 +1,8 @@
 package Controler;
 
-import Modelo.Personagem;
-import Modelo.Caveira;
-import Modelo.Hero;
-import Modelo.Chaser;
-import Modelo.BichinhoVaiVemHorizontal;
+import Modelo.*;
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
-import Modelo.BichinhoVaiVemVertical;
-import Modelo.ZigueZague;
 import Auxiliar.Posicao;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
@@ -31,7 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
-import javax.swing.JButton;
+import javax.swing.*;
 
 public class Tela extends javax.swing.JFrame implements MouseListener, KeyListener {
 
@@ -42,8 +36,8 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     private int cameraLinha = 0;
     private int cameraColuna = 0;
 
+    // Construtor da tela
     public Tela() {
-
 
         Desenho.setCenario(this);
         initComponents();
@@ -58,13 +52,38 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
         faseAtual = new ArrayList<Personagem>();
 
-
-
         /*Cria faseAtual adiciona personagens*/
         hero = new Hero("player1_right2.png");
-        hero.setPosicao(0, 7);
+        hero.setPosicao(1, 7);
         this.addPersonagem(hero);
         this.atualizaCamera();
+
+        for (int i = 0; i < Consts.MUNDO_LARGURA; i++){
+            Barreira temp;
+            temp = new Barreira("asteroid.png");
+            temp.setPosicao(0, i);
+            this.addPersonagem(temp);
+        }
+
+        for (int i = 1; i < Consts.MUNDO_ALTURA; i++){
+            Barreira temp;
+            temp = new Barreira("asteroid.png");
+            temp.setPosicao(i, 0);
+            this.addPersonagem(temp);
+        }
+
+        for (int i = 1; i < Consts.MUNDO_LARGURA; i++){
+            Barreira temp;
+            temp = new Barreira("asteroid.png");
+            temp.setPosicao(Consts.MUNDO_ALTURA-1, i);
+            this.addPersonagem(temp);
+        }
+        for (int i = 1; i < Consts.MUNDO_ALTURA - 1; i++) {
+            Barreira temp = new Barreira("asteroid.png");
+            temp.setPosicao(i, Consts.MUNDO_LARGURA - 1);
+            this.addPersonagem(temp);
+        }
+
 
         ZigueZague zz = new ZigueZague("robo.png");
         zz.setPosicao(5, 5);
@@ -85,10 +104,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         Caveira bV = new Caveira("caveira.png");
         bV.setPosicao(9, 1);
         this.addPersonagem(bV);
-        
-        Chaser chase = new Chaser("chaser.png");
-        chase.setPosicao(12, 12);
-        this.addPersonagem(chase);        
+
         
     }
 
@@ -120,7 +136,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         Graphics g = this.getBufferStrategy().getDrawGraphics();
         /*Criamos um contexto gráfico*/
         g2 = g.create(getInsets().left, getInsets().top, getWidth() - getInsets().right, getHeight() - getInsets().top);
-        
+
         // **********Desenha cenário de fundo*************
 
         for (int i = 0; i < Consts.RES; i++) {
@@ -131,7 +147,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                 if (mapaLinha < Consts.MUNDO_ALTURA && mapaColuna < Consts.MUNDO_LARGURA) {
                     try {
                         Image newImage = Toolkit.getDefaultToolkit().getImage(
-                                new java.io.File(".").getCanonicalPath() + Consts.PATH + "background_space.png");
+                                new java.io.File(".").getCanonicalPath() + Consts.PATH + "bg_02_v.png");
                         g2.drawImage(newImage,
                                 j * Consts.CELL_SIDE, i * Consts.CELL_SIDE,
                                 Consts.CELL_SIDE, Consts.CELL_SIDE, null);
@@ -141,6 +157,15 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                 }
             }
         }
+
+        // Atualiza animação de todos os personagens antes de desenhar
+        /*
+        for (Personagem p : faseAtual) {
+            if (p instanceof Hero) {
+                ((Hero)p).trocaIdleFrame();
+            }
+        } */
+
         if (!this.faseAtual.isEmpty()) {
             this.cj.desenhaTudo(faseAtual);
             this.cj.processaTudo(faseAtual);
@@ -177,11 +202,31 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
             this.faseAtual.clear();
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
             hero.moveUp();
+            try {
+                hero.troca_imagem("player1_right1.png");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             hero.moveDown();
+            try {
+                hero.troca_imagem("player1_right1.png");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
         } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             hero.moveLeft();
+            try {
+                hero.troca_imagem("player1_right1.png");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            try {
+                hero.troca_imagem("player1_right3.png");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
             hero.moveRight();
         }
         this.atualizaCamera();

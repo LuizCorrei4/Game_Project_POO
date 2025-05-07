@@ -34,7 +34,7 @@ public abstract class Personagem implements Serializable {
         this.pPosicao = new Posicao(1, 1);
         this.bTransponivel = true;
         this.bMortal = false;
-        try { //aaaaa
+        try {
             // Carrega imagem original
             iImage = new ImageIcon(new java.io.File(".").getCanonicalPath() + Consts.PATH + sNomeImagePNG);
             Image img = iImage.getImage();
