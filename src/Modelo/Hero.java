@@ -26,6 +26,7 @@ import javax.swing.ImageIcon;
 public class Hero extends Personagem implements Serializable{
     public Hero(String sNomeImagePNG) {
         super(sNomeImagePNG);
+        this.bTransponivel = false;
     }
 
     public void voltaAUltimaPosicao(){

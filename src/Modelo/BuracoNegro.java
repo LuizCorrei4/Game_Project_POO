@@ -1,7 +1,7 @@
 package Modelo;
 
-public class Barreira extends Personagem{
-    public Barreira(String sNomeImagePNG) {
+public class BuracoNegro extends Personagem{
+    public BuracoNegro(String sNomeImagePNG) {
         super(sNomeImagePNG);
         this.bTransponivel = false;
         this.bMortal = false;

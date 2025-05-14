@@ -29,12 +29,12 @@ import javax.swing.*;
 
 public class Tela extends javax.swing.JFrame implements MouseListener, KeyListener {
 
-    private Hero hero;
-    private ArrayList<Personagem> faseAtual;
-    private ControleDeJogo cj = new ControleDeJogo();
-    private Graphics g2;
-    private int cameraLinha = 0;
-    private int cameraColuna = 0;
+    protected Hero hero;
+    protected ArrayList<Personagem> faseAtual;
+    protected ControleDeJogo cj = new ControleDeJogo();
+    protected Graphics g2;
+    protected int cameraLinha = 0;
+    protected int cameraColuna = 0;
 
     // Construtor da tela
     public Tela() {
@@ -98,14 +98,15 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         this.addPersonagem(bBichinhoH2);
         
         BichinhoVaiVemVertical bVv = new BichinhoVaiVemVertical("Caveira.png");
-        bVv.setPosicao(10, 10);
+        bVv.setPosicao(5, 5);
         this.addPersonagem(bVv);        
         
         Caveira bV = new Caveira("caveira.png");
         bV.setPosicao(9, 1);
         this.addPersonagem(bV);
 
-        
+
+
     }
 
     public int getCameraLinha() {
@@ -178,7 +179,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         }
     }
 
-    private void atualizaCamera()
+    protected void atualizaCamera()
     {
         int linha = hero.getPosicao().getLinha();
         int coluna = hero.getPosicao().getColuna();
@@ -251,7 +252,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("POO2023-1 - Skooter");
