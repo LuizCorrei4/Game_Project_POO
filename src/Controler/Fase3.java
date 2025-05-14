@@ -8,9 +8,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class Fase2 extends Tela{
 
-    public Fase2() {
+public class Fase3 extends Tela{
+
+    public Fase3() {
         faseAtual = new ArrayList<Personagem>();
         hero.setPosicao(this.spawn.getLinha(), this.spawn.getColuna());
         this.addPersonagem(hero);
@@ -19,21 +20,21 @@ public class Fase2 extends Tela{
 
         String[] labirinto = {
                 // colunas de 0 a 29 (linha 0 e 14 são margens visuais, não terão barreiras)
-                "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",  // Linha 0 - borda
-                "O.☆.....O.....♆.....☄........",
-                "OOOOO.OOOOOO.OOOOOOO.OOOOOOO..",
-                "O.....♆..........☆.........☄.",
-                "O.OOOOO.OOOOOOOOO.OOOOO.OOOOO.",
-                "O.☄...........O.........☆....",
-                "OOOOOOO.O.OOOOOOOOO.OOOOOOO.O.",
-                "O.......O.♆.....O.....☄.....O",
-                "OO.OOOOOOOOO.OOOOO.OOOOO.OOOO.",
-                "O.....O...☆.....O.....♆......",
-                "OOOO.OOO.OOOOOOOOOOO.OOOOOO.O.",
-                "O.......O...☄.....O........☆.",
-                "OOOOO.OOOOO.OOOOO.OOOOO.OOOOO.",
-                "O.♆.....O.......☄...O........",
-                "OOOOOOOOOOOOOOOOOOOOOOOOOOOOO."
+                "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
+                "O.D...O...E....O.P.O.X....O.O",
+                "OOOOO.OOOOOO.OOOOOOO.OOOOOOO.O",
+                "O.....R.....O.P.....E.....D..O",
+                "O.OOOOO.OOOOOOOOO.OOOOO.OOOOOO",
+                "O.X...O....O.P....O...R...O.O",
+                "OOOOO.O.OOOOOOOOO.OOOOOOO.OOOO",
+                "O...R...O.....D.O.....X....O.O",
+                "OO.OOOOOOOOO.OOOOO.OOOOO.OOOOO",
+                "O.P...O.....E.....O.....R...O.O",
+                "OOOO.OOO.OOOOOOOOOOO.OOOOOO.OO",
+                "O.....O...X.....O........D.O",
+                "OOOOO.OOOOO.OOOOO.OOOOO.OOOOOO",
+                "O.E...O.P.....R...O.X.....O.O",
+                "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
         };
 
         for (int linha = 0; linha < labirinto.length; linha++) {
@@ -49,7 +50,7 @@ public class Fase2 extends Tela{
 
     }
 
- @Override
+    @Override
     public void paint(Graphics gOld) {
         Graphics g = this.getBufferStrategy().getDrawGraphics();
         //Criamos um contexto gráfico

@@ -22,7 +22,7 @@ public abstract class Personagem implements Serializable {
     protected Posicao pPosicao;       // Posição atual (linha, coluna) no grid
     protected boolean bTransponivel;  // Pode atravessar outros personagens?
     protected boolean bMortal;        // Se verdadeiro, ao colidir, personagem é removido
-
+    protected boolean bAssasino;
     public boolean isbMortal() {
         return bMortal;
     }
@@ -34,17 +34,36 @@ public abstract class Personagem implements Serializable {
         this.pPosicao = new Posicao(1, 1);
         this.bTransponivel = true;
         this.bMortal = false;
+        this.bAssasino = false;
+        this.iImage = carregarImagemRedimensionada(sNomeImagePNG);
+    }
+
+    /**
+     * Carrega uma imagem a partir do nome do arquivo e redimensiona para o tamanho da célula.
+     * @param nomeImagem Nome do arquivo PNG da imagem
+     * @return ImageIcon redimensionado
+     */
+    protected ImageIcon carregarImagemRedimensionada(String nomeImagem) {
         try {
-            // Carrega imagem original
-            iImage = new ImageIcon(new java.io.File(".").getCanonicalPath() + Consts.PATH + sNomeImagePNG);
-            Image img = iImage.getImage();
-            // Redimensiona para o tamanho de célula
-            BufferedImage bi = new BufferedImage(Consts.CELL_SIDE, Consts.CELL_SIDE, BufferedImage.TYPE_INT_ARGB);
-            Graphics g = bi.createGraphics();
-            g.drawImage(img, 0, 0, Consts.CELL_SIDE, Consts.CELL_SIDE, null);
-            iImage = new ImageIcon(bi);
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+            String caminhoImagem = new java.io.File(".").getCanonicalPath() + Consts.PATH + nomeImagem;
+            ImageIcon iconOriginal = new ImageIcon(caminhoImagem);
+            Image imagemOriginal = iconOriginal.getImage();
+
+            BufferedImage imagemRedimensionada = new BufferedImage(
+                    Consts.CELL_SIDE,
+                    Consts.CELL_SIDE,
+                    BufferedImage.TYPE_INT_ARGB
+            );
+
+            Graphics g = imagemRedimensionada.createGraphics();
+            g.drawImage(imagemOriginal, 0, 0, Consts.CELL_SIDE, Consts.CELL_SIDE, null);
+            g.dispose(); // libera recursos do gráfico
+
+            return new ImageIcon(imagemRedimensionada);
+
+        } catch (IOException e) {
+            System.out.println("Erro ao carregar imagem: " + e.getMessage());
+            return null;
         }
     }
 
@@ -57,6 +76,7 @@ public abstract class Personagem implements Serializable {
         return bTransponivel;
     }
 
+    public boolean isbAssasino() { return bAssasino; }
     public void setbTransponivel(boolean bTransponivel) {
         this.bTransponivel = bTransponivel;
     }

@@ -1,3 +1,5 @@
+// File: Fase5.java
+
 package Controler;
 import Auxiliar.Consts;
 import Modelo.*;
@@ -8,48 +10,23 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class Fase2 extends Tela{
+public class Fase5 extends Tela{
 
-    public Fase2() {
+    public Fase5() {
         faseAtual = new ArrayList<Personagem>();
         hero.setPosicao(this.spawn.getLinha(), this.spawn.getColuna());
         this.addPersonagem(hero);
         this.atualizaCamera();
         this.desenha_barreira();
 
-        String[] labirinto = {
-                // colunas de 0 a 29 (linha 0 e 14 são margens visuais, não terão barreiras)
-                "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",  // Linha 0 - borda
-                "O.☆.....O.....♆.....☄........",
-                "OOOOO.OOOOOO.OOOOOOO.OOOOOOO..",
-                "O.....♆..........☆.........☄.",
-                "O.OOOOO.OOOOOOOOO.OOOOO.OOOOO.",
-                "O.☄...........O.........☆....",
-                "OOOOOOO.O.OOOOOOOOO.OOOOOOO.O.",
-                "O.......O.♆.....O.....☄.....O",
-                "OO.OOOOOOOOO.OOOOO.OOOOO.OOOO.",
-                "O.....O...☆.....O.....♆......",
-                "OOOO.OOO.OOOOOOOOOOO.OOOOOO.O.",
-                "O.......O...☄.....O........☆.",
-                "OOOOO.OOOOO.OOOOO.OOOOO.OOOOO.",
-                "O.♆.....O.......☄...O........",
-                "OOOOOOOOOOOOOOOOOOOOOOOOOOOOO."
-        };
-
-        for (int linha = 0; linha < labirinto.length; linha++) {
-            for (int coluna = 0; coluna < labirinto[linha].length(); coluna++) {
-                if (labirinto[linha].charAt(coluna) == 'O') {
-                    Barreira barreira = new Barreira("asteroid.png");
-                    barreira.setPosicao(linha, coluna);
-                    this.addPersonagem(barreira);
-                }
-            }
-        }
-
+        // Um outro inimigo (Caveira)
+        NaveInimiga nV = new NaveInimiga("Spaceship2_right.png", Consts.RIGHT);
+        nV.setPosicao(9, 1);  // Posição inicial
+        this.addPersonagem(nV);
 
     }
 
- @Override
+    @Override
     public void paint(Graphics gOld) {
         Graphics g = this.getBufferStrategy().getDrawGraphics();
         //Criamos um contexto gráfico
@@ -79,6 +56,7 @@ public class Fase2 extends Tela{
         if (!this.faseAtual.isEmpty()) {
             this.cj.desenhaTudo(faseAtual);
             this.cj.processaTudo(faseAtual);
+            this.atualizaCamera();
         }
 
         g.dispose();

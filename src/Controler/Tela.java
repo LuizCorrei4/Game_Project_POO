@@ -25,9 +25,10 @@ import java.util.logging.Logger;
 
 public abstract class Tela extends javax.swing.JFrame implements KeyListener {
 
+    protected final Posicao spawn = new Posicao(1, 1);
     protected ArrayList<Personagem> faseAtual;
     protected Hero hero;
-    protected ControleDeJogo cj = new ControleDeJogo();
+    protected ControleDeJogo cj = new ControleDeJogo(spawn);
     protected Graphics g2;
     protected int cameraLinha = 0;
     protected int cameraColuna = 0;
@@ -61,35 +62,19 @@ public abstract class Tela extends javax.swing.JFrame implements KeyListener {
 
         // Criação das barreiras (asteroides) que formam as bordas do tabuleiro
         // Barreira superior
-        this.desenha_barreira();
-        // Criação e posicionamento de outros personagens (exemplo de inimigos ou objetos móveis)
 
-        // ZigueZague (movimento em ziguezague)
-        ZigueZague zz = new ZigueZague("robo.png");
-        zz.setPosicao(5, 5);  // Posição inicial
-        this.addPersonagem(zz); // Adiciona ao jogo
-
-        // Bichinho que se move horizontalmente
-        BichinhoVaiVemHorizontal bBichinhoH = new BichinhoVaiVemHorizontal("roboPink.png");
-        bBichinhoH.setPosicao(3, 3);  // Posição inicial
-        this.addPersonagem(bBichinhoH);
-
-        // Outro bichinho que se move horizontalmente
-        BichinhoVaiVemHorizontal bBichinhoH2 = new BichinhoVaiVemHorizontal("roboPink.png");
-        bBichinhoH2.setPosicao(6, 6);  // Posição inicial
-        this.addPersonagem(bBichinhoH2);
-
-        // Bichinho que se move verticalmente
-        BichinhoVaiVemVertical bVv = new BichinhoVaiVemVertical("Caveira.png");
-        bVv.setPosicao(5, 5);  // Posição inicial
-        this.addPersonagem(bVv);
-
-        // Um outro inimigo (Caveira)
-        Caveira bV = new Caveira("caveira.png");
-        bV.setPosicao(9, 1);  // Posição inicial
-        this.addPersonagem(bV);
     }
 
+    protected void carregarMenu() {
+        // Fecha o menu atual
+        this.setVisible(false);
+        this.dispose();
+        // Cria e exibe a nova fase
+        Tela fase = new Menu();
+        fase.setVisible(true);
+        fase.createBufferStrategy(2);
+        fase.go();
+    }
 
     public int getCameraLinha() {
         return cameraLinha;

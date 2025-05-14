@@ -28,6 +28,7 @@ public class Hero extends Personagem implements Serializable{
     public Hero(String sNomeImagePNG) {
         super(sNomeImagePNG);
         this.bTransponivel = true;
+        this.bMortal = true;
     }
 
     public void voltaAUltimaPosicao(){

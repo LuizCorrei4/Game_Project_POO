@@ -70,6 +70,55 @@ public class Menu extends Tela{
         this.addPersonagem(fase5);
         buracosNegros.add(fase5);
 
+        Decoracao star1 = new Decoracao("YellowStars2.png");
+        star1.setPosicao(2, 12);
+        this.addPersonagem(star1);
+
+        Decoracao star2 = new Decoracao("WhiteStars2.png");
+        star2.setPosicao(2, 2);
+        this.addPersonagem(star2);
+
+        Decoracao star3 = new Decoracao("YellowStars2.png");
+        star3.setPosicao(12, 2);
+        this.addPersonagem(star3);
+
+        Decoracao star4 = new Decoracao("WhiteStars2.png");
+        star4.setPosicao(12, 12);
+        this.addPersonagem(star4);
+
+        Decoracao nave1 = new Decoracao("UfoGrey1.png");
+        nave1.setPosicao(10, 4);
+        this.addPersonagem(nave1);
+
+        Decoracao foguete = new Decoracao("RocketWhite.png");
+        foguete.setPosicao(4, 7);
+        this.addPersonagem(foguete);
+
+        Decoracao saturno = new Decoracao("saturno.png");
+        saturno.setPosicao(8, 5);
+        this.addPersonagem(saturno);
+
+        Numero one = new Numero("n1.png");
+        one.setPosicao(3, 9);
+        this.addPersonagem(one);
+
+        Numero two = new Numero("n2.png");
+        two.setPosicao(5, 9);
+        this.addPersonagem(two);
+
+        Numero three = new Numero("n3.png");
+        three.setPosicao(7, 9);
+        this.addPersonagem(three);
+
+        Numero four = new Numero("n4.png");
+        four.setPosicao(9, 9);
+        this.addPersonagem(four);
+
+        Numero five = new Numero("n5.png");
+        five.setPosicao(11, 9);
+        this.addPersonagem(five);
+
+
     }
 
 
@@ -85,7 +134,18 @@ public class Menu extends Tela{
             case 1:
                 fase = new Fase1();
                 break;
-
+            case 2:
+                fase = new Fase2();
+                break;
+            case 3:
+                fase = new Fase3();
+                break;
+            case 4:
+                fase = new Fase4();
+                break;
+            case 5:
+                fase = new Fase5();
+                break;
         }
         fase.setVisible(true);
         fase.createBufferStrategy(2);
@@ -95,10 +155,9 @@ public class Menu extends Tela{
     @Override
     public void paint(Graphics gOld) {
         Graphics g = this.getBufferStrategy().getDrawGraphics();
-        //Criamos um contexto gráfico
         g2 = g.create(getInsets().left, getInsets().top, getWidth() - getInsets().right, getHeight() - getInsets().top);
 
-        // Desenha cenário de fundo
+
 
         for (int i = 0; i < Consts.RES; i++) {
             for (int j = 0; j < Consts.RES; j++) {
@@ -107,8 +166,31 @@ public class Menu extends Tela{
 
                 if (mapaLinha < Consts.MUNDO_MENU_ALTURA && mapaColuna < Consts.MUNDO_MENU_LARGURA) {
                     try {
+                        String imageName;
+
+                        // Verifica se a célula atual é a especial
+                        if (i == 3 && j == 3) {
+                            imageName = "1.png"; // R
+                        } else if( i == 3 && j== 4) {
+                            imageName = "2.png"; // U
+                        } else if( i == 3 && j== 5) {
+                            imageName = "3.png"; // N
+                        } else if( i == 4 && j== 2) {
+                            imageName = "4.png"; // S
+                        } else if( i == 4 && j== 3) {
+                            imageName = "5.png"; // P
+                        } else if( i == 4 && j== 4) {
+                            imageName = "6.png"; // A
+                        } else if( i == 4 && j== 5) {
+                            imageName = "7.png"; // C
+                        } else if( i == 4 && j== 6) {
+                            imageName = "8.png"; // E
+                        } else {
+                            imageName = "bg_02_v.png"; // imagem padrão
+                        }
+
                         Image newImage = Toolkit.getDefaultToolkit().getImage(
-                                new java.io.File(".").getCanonicalPath() + Consts.PATH + "bg_02_v.png");
+                                new java.io.File(".").getCanonicalPath() + Consts.PATH + imageName);
                         g2.drawImage(newImage,
                                 j * Consts.CELL_SIDE, i * Consts.CELL_SIDE,
                                 Consts.CELL_SIDE, Consts.CELL_SIDE, null);
@@ -137,6 +219,7 @@ public class Menu extends Tela{
             getBufferStrategy().show();
         }
     }
+
 
     @Override
     protected void atualizaCamera() {

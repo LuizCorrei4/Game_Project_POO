@@ -12,7 +12,10 @@ import Auxiliar.Posicao; // Importa a classe Posicao do pacote Auxiliar
 import java.util.ArrayList; // Importa a classe ArrayList
 
 public class ControleDeJogo {
-
+    private Posicao spawn;
+    public ControleDeJogo(Posicao spawn){
+        this.spawn = spawn;
+    }
     // Metodo responsável por desenhar todos os personagens na tela
     public void desenhaTudo(ArrayList<Personagem> e) {
         for (Personagem personagem : e) {
@@ -32,7 +35,6 @@ public class ControleDeJogo {
 
             //  Verifica se o héroi está na mesma posição do i-ésimo personagem
             if (hero.getPosicao().igual(pIesimoPersonagem.getPosicao())) {
-
                 if (pIesimoPersonagem.isbTransponivel()) { // Verifica se o personagem é transponível
                     if (pIesimoPersonagem.isbMortal()) {
                         // Se o personagem for mortal, remove o personagem da fase
@@ -40,13 +42,15 @@ public class ControleDeJogo {
                     }
                 }
             }
+            if (hero.getPosicao().igual(pIesimoPersonagem.getPosicao()) && pIesimoPersonagem.isbAssasino()) {
+                hero.setPosicao(spawn.getLinha(), spawn.getColuna());
+                break;
+            }
         }
 
         // A segunda parte do loop parece estar sem funcionalidade, apenas percorre a lista sem fazer nada
         // Esse trecho pode ser removido ou completado, caso tenha uma ação a ser realizada aqui.
-        //for (int i = 1; i < umaFase.size(); i++) {
-        //     pIesimoPersonagem = umaFase.get(i);
-        //}
+
     }
 
     /* Retorna true se a posição p é válida para o Hero em relação a todos os personagens no array */
