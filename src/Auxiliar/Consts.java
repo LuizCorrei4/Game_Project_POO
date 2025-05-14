@@ -9,7 +9,7 @@ public class Consts {
     public static final int MUNDO_ALTURA = 15;
     public static final int MUNDO_MENU_LARGURA = 15;
     public static final int MUNDO_MENU_ALTURA = 15;
-    public static final int PERIOD = 150;
+    public static final int PERIOD = 100; //TEMPO DE ATUALIZAÇÃO DA TELA MILISEGUNDOS
     public static final String PATH = File.separator+"imgs"+File.separator;
-    public static final int TIMER = 10;
+    public static final int TIMER = 10; //VELOCIDADE DO TIRO DO FOGO
 }

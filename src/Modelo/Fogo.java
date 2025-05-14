@@ -2,6 +2,7 @@ package Modelo;
 
 import Auxiliar.Desenho;
 import Controler.Tela;
+import Controler.Menu;
 import java.awt.Graphics;
 import java.io.Serializable;
 

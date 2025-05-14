@@ -1,3 +1,5 @@
+// File: Posicao.java
+
 package Auxiliar;
 
 import java.io.Serializable;

@@ -4,6 +4,7 @@ import Auxiliar.Consts;
 import Auxiliar.Desenho;
 import Controler.ControleDeJogo;
 import Controler.Tela;
+import Controler.Menu;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.io.IOException;
