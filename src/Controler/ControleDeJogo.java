@@ -29,9 +29,11 @@ public class ControleDeJogo {
         // Laço para verificar as colisões entre o herói e os outros personagens
         for (int i = 1; i < umaFase.size(); i++) {
             pIesimoPersonagem = umaFase.get(i); // Obtém o personagem da posição i
+
+            //  Verifica se o héroi está na mesma posição do i-ésimo personagem
             if (hero.getPosicao().igual(pIesimoPersonagem.getPosicao())) {
-                // Verifica se a posição do herói é igual à do personagem
-                if (pIesimoPersonagem.isbTransponivel()) { // Verifica se o personagem é transponível (pode ser passado por)
+
+                if (pIesimoPersonagem.isbTransponivel()) { // Verifica se o personagem é transponível
                     if (pIesimoPersonagem.isbMortal()) {
                         // Se o personagem for mortal, remove o personagem da fase
                         umaFase.remove(pIesimoPersonagem);
@@ -42,9 +44,9 @@ public class ControleDeJogo {
 
         // A segunda parte do loop parece estar sem funcionalidade, apenas percorre a lista sem fazer nada
         // Esse trecho pode ser removido ou completado, caso tenha uma ação a ser realizada aqui.
-        for (int i = 1; i < umaFase.size(); i++) {
-            pIesimoPersonagem = umaFase.get(i);
-        }
+        //for (int i = 1; i < umaFase.size(); i++) {
+        //     pIesimoPersonagem = umaFase.get(i);
+        //}
     }
 
     /* Retorna true se a posição p é válida para o Hero em relação a todos os personagens no array */

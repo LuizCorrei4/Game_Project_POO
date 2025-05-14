@@ -1,10 +1,7 @@
 package Controler;
 import Auxiliar.Consts;
-import Auxiliar.Desenho;
-import Auxiliar.Posicao;
 import Modelo.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -12,7 +9,8 @@ import java.util.logging.Logger;
 
 
 public class Menu extends Tela{
-
+    int fase_cont = 0;
+    private ArrayList<BuracoNegro> buracosNegros = new ArrayList<>();
     public Menu() {
 
         faseAtual = new ArrayList<Personagem>();
@@ -48,18 +46,59 @@ public class Menu extends Tela{
         }
 
         BuracoNegro fase1 = new BuracoNegro("BuracoNegro.png");
-        fase1.setPosicao(7, 10);
+        fase1.setPosicao(3, 10);
         this.addPersonagem(fase1);
+        buracosNegros.add(fase1);
 
+        BuracoNegro fase2 = new BuracoNegro("BuracoNegro.png");
+        fase2.setPosicao(5, 10);
+        this.addPersonagem(fase2);
+        buracosNegros.add(fase2);
+
+        BuracoNegro fase3 = new BuracoNegro("BuracoNegro.png");
+        fase3.setPosicao(7, 10);
+        this.addPersonagem(fase3);
+        buracosNegros.add(fase3);
+
+        BuracoNegro fase4 = new BuracoNegro("BuracoNegro.png");
+        fase4.setPosicao(9, 10);
+        this.addPersonagem(fase4);
+        buracosNegros.add(fase4);
+
+        BuracoNegro fase5 = new BuracoNegro("BuracoNegro.png");
+        fase5.setPosicao(11, 10);
+        this.addPersonagem(fase5);
+        buracosNegros.add(fase5);
+
+    }
+
+
+
+    private void carregarFase(int numeroFase) {
+        // Fecha o menu atual
+        this.setVisible(false);
+        this.dispose();
+
+        // Cria e exibe a nova fase
+        Tela fase = null;
+        switch(numeroFase) {
+            case 1:
+                fase = new Fase1();
+                break;
+
+        }
+        fase.setVisible(true);
+        fase.createBufferStrategy(2);
+        fase.go();
     }
 
     @Override
     public void paint(Graphics gOld) {
         Graphics g = this.getBufferStrategy().getDrawGraphics();
-        /*Criamos um contexto gráfico*/
+        //Criamos um contexto gráfico
         g2 = g.create(getInsets().left, getInsets().top, getWidth() - getInsets().right, getHeight() - getInsets().top);
 
-        // **********Desenha cenário de fundo*************
+        // Desenha cenário de fundo
 
         for (int i = 0; i < Consts.RES; i++) {
             for (int j = 0; j < Consts.RES; j++) {
@@ -83,6 +122,13 @@ public class Menu extends Tela{
         if (!this.faseAtual.isEmpty()) {
             this.cj.desenhaTudo(faseAtual);
             this.cj.processaTudo(faseAtual);
+            for (BuracoNegro buraco : buracosNegros) {
+                if (hero.getPosicao().igual(buraco.getPosicao())) {
+                    int faseNumero = buracosNegros.indexOf(buraco) + 1;
+                    carregarFase(faseNumero);
+                    break;
+                }
+            }
         }
 
         g.dispose();
@@ -92,22 +138,13 @@ public class Menu extends Tela{
         }
     }
 
-    @Override    /*Metodo responsável por atualizar a posição da câmera com base na posição atual do herói (hero)*/
+    @Override
     protected void atualizaCamera() {
-        // Obtém a linha atual do herói
-        int linha = hero.getPosicao().getLinha();
 
-        // Obtém a coluna atual do herói
+        int linha = hero.getPosicao().getLinha();
         int coluna = hero.getPosicao().getColuna();
 
-        // Calcula a linha da câmera:
-        // - Tenta centralizar o herói verticalmente na tela.
-        // - Usa Math.max para garantir que a câmera nunca vá acima do topo do mapa (linha < 0).
-        // - Usa Math.min para garantir que a câmera não ultrapasse os limites inferiores do mapa.
         cameraLinha = Math.max(0, Math.min(linha - Consts.RES / 2, Consts.MUNDO_MENU_ALTURA - Consts.RES));
-
-        // Calcula a coluna da câmera (mesmo raciocínio da linha):
-        // - Centraliza horizontalmente, respeitando os limites laterais do mundo.
         cameraColuna = Math.max(0, Math.min(coluna - Consts.RES / 2, Consts.MUNDO_MENU_LARGURA - Consts.RES));
     }
 }

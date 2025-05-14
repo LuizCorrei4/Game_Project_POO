@@ -10,30 +10,20 @@ import Modelo.*;
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
 import Auxiliar.Posicao;
-import java.awt.FlowLayout;
+
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
-import javax.swing.*;
 
-public class Tela extends javax.swing.JFrame implements KeyListener {
+public abstract class Tela extends javax.swing.JFrame implements KeyListener {
 
     protected ArrayList<Personagem> faseAtual;
     protected Hero hero;
@@ -71,36 +61,7 @@ public class Tela extends javax.swing.JFrame implements KeyListener {
 
         // Criação das barreiras (asteroides) que formam as bordas do tabuleiro
         // Barreira superior
-        for (int i = 0; i < Consts.MUNDO_LARGURA; i++) {
-            Barreira temp;
-            temp = new Barreira("asteroid.png");
-            temp.setPosicao(0, i); // Define a posição da barreira
-            this.addPersonagem(temp); // Adiciona a barreira ao jogo
-        }
-
-        // Barreira esquerda
-        for (int i = 1; i < Consts.MUNDO_ALTURA; i++) {
-            Barreira temp;
-            temp = new Barreira("asteroid.png");
-            temp.setPosicao(i, 0); // Posição da barreira à esquerda
-            this.addPersonagem(temp);
-        }
-
-        // Barreira inferior
-        for (int i = 1; i < Consts.MUNDO_LARGURA; i++) {
-            Barreira temp;
-            temp = new Barreira("asteroid.png");
-            temp.setPosicao(Consts.MUNDO_ALTURA-1, i); // Posição da barreira na parte inferior
-            this.addPersonagem(temp);
-        }
-
-        // Barreira direita
-        for (int i = 1; i < Consts.MUNDO_ALTURA - 1; i++) {
-            Barreira temp = new Barreira("asteroid.png");
-            temp.setPosicao(i, Consts.MUNDO_LARGURA - 1); // Posição da barreira à direita
-            this.addPersonagem(temp);
-        }
-
+        this.desenha_barreira();
         // Criação e posicionamento de outros personagens (exemplo de inimigos ou objetos móveis)
 
         // ZigueZague (movimento em ziguezague)
@@ -159,10 +120,23 @@ public class Tela extends javax.swing.JFrame implements KeyListener {
     */
     public void paint(Graphics gOld) {
 
-
         Graphics g = this.getBufferStrategy().getDrawGraphics();
-        /*Criamos um contexto gráfico*/
+        // this.getBufferStrategy() retorna o objeto que gerencia os buffers de desenho criados por createBufferStrategy(2) na Main
+        // getDrawGraphics() devolve um Graphics ligado ao buffer oculto atual
+        // Tudo que você desenhar em g ficará nesse buffer, não diretamente nessa tela visível
+
+        /*Criamos um contexto gráfico
+        * g.create() retorna um novo objeto da classe Graphics.
+        * Ou seja, estamos copiando o estado atual de g para um novo contexto gráfico, sobre o qual você pode desenhar sem alterar o g original.
+        */
         g2 = g.create(getInsets().left, getInsets().top, getWidth() - getInsets().right, getHeight() - getInsets().top);
+        /* g.create(int x, int t, int width, int height)
+        * x, y definem a origem (0, 0) dEsse novo contexto gráfico, em relação ao contexto original g.
+        * Tudo o que for desenhado em g2 usando coordenadas (x, y), irá aparecer, na janela de g.
+        * Width, height definem a largura e altura de uma região de recorte.
+        * Qualquer traço fora desse retângulo (x, y, width, height) será ignorado.
+        * getInsets() informa o tamanho das bordas decorativas da janela;
+        */
 
         // **********Desenha cenário de fundo*************
 
@@ -185,19 +159,54 @@ public class Tela extends javax.swing.JFrame implements KeyListener {
             }
         }
 
-
+        /* Desenho e processamento dos personagens */
+        /*
+        *   faseAtual: lista de todos os personagens (herói é o índice 0)
+        *   desenhaTudo: chama o autoDesenho() de cada personagem, que por sua vez usa Desenho.desenhar(...)
+        *   processaTudo: atualiza a lógica do jogo - movimentação, colisões, remoção de inimigos
+        */
         if (!this.faseAtual.isEmpty()) {
             this.cj.desenhaTudo(faseAtual);
             this.cj.processaTudo(faseAtual);
         }
-
+        // Libera recursos: dispose() sinaliza que você terminou de usar os objetos
         g.dispose();
         g2.dispose();
         if (!getBufferStrategy().contentsLost()) {
             getBufferStrategy().show();
         }
     }
+    protected void desenha_barreira(){
+        for (int i = 0; i < Consts.MUNDO_LARGURA; i++) {
+            Barreira temp;
+            temp = new Barreira("asteroid.png");
+            temp.setPosicao(0, i); // Define a posição da barreira
+            this.addPersonagem(temp); // Adiciona a barreira ao jogo
+        }
 
+        // Barreira esquerda
+        for (int i = 1; i < Consts.MUNDO_ALTURA; i++) {
+            Barreira temp;
+            temp = new Barreira("asteroid.png");
+            temp.setPosicao(i, 0); // Posição da barreira à esquerda
+            this.addPersonagem(temp);
+        }
+
+        // Barreira inferior
+        for (int i = 1; i < Consts.MUNDO_LARGURA; i++) {
+            Barreira temp;
+            temp = new Barreira("asteroid.png");
+            temp.setPosicao(Consts.MUNDO_ALTURA-1, i); // Posição da barreira na parte inferior
+            this.addPersonagem(temp);
+        }
+
+        // Barreira direita
+        for (int i = 1; i < Consts.MUNDO_ALTURA - 1; i++) {
+            Barreira temp = new Barreira("asteroid.png");
+            temp.setPosicao(i, Consts.MUNDO_LARGURA - 1); // Posição da barreira à direita
+            this.addPersonagem(temp);
+        }
+    }
     /*Metodo responsável por atualizar a posição da câmera com base na posição atual do herói (hero)*/
     protected void atualizaCamera() {
         // Obtém a linha atual do herói
