@@ -53,12 +53,28 @@ public class Fase2 extends Tela{
         this.addPersonagem(chave);
 
         NaveInimiga nV = new NaveInimiga("Spaceship2_down.png", "projetil1_down.png" ,Consts.DOWN);
-        nV.setPosicao(2, 20);  // Posição inicial
+        nV.setPosicao(0, 20);  // Posição inicial
         this.addPersonagem(nV);
 
         NaveInimiga nV2 = new NaveInimiga("Spaceship2_right.png", "projetil1_right.png" , Consts.RIGHT);
-        nV2.setPosicao(3, 3);  // Posição inicial
+        nV2.setPosicao(3, 1);  // Posição inicial
         this.addPersonagem(nV2);
+
+        BichinhoVaiVemHorizontal bichinho = new BichinhoVaiVemHorizontal("UfoGrey.png");
+        bichinho.setPosicao(1, 11);
+        this.addPersonagem(bichinho);
+
+        BichinhoVaiVemHorizontal bichinho2 = new BichinhoVaiVemHorizontal("UfoGrey.png");
+        bichinho2.setPosicao(7, 12);
+        this.addPersonagem(bichinho2);
+
+        BichinhoVaiVemHorizontal bichinho3 = new BichinhoVaiVemHorizontal("UfoGrey.png");
+        bichinho3.setPosicao(9, 12);
+        this.addPersonagem(bichinho3);
+
+        BichinhoVaiVemHorizontal bichinho4 = new BichinhoVaiVemHorizontal("UfoGrey.png");
+        bichinho4.setPosicao(7, 18);
+        this.addPersonagem(bichinho4);
 
     }
 
