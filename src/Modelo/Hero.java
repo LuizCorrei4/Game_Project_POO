@@ -25,30 +25,17 @@ import java.io.Serializable;
 import javax.swing.ImageIcon;
 
 public class Hero extends Personagem implements Serializable{
-
-    private int contador_moedas;
-
     public Hero(String sNomeImagePNG) {
         super(sNomeImagePNG);
         this.bTransponivel = true;
         this.bMortal = true;
-        this.contador_moedas = 0;
+
     }
 
     public void voltaAUltimaPosicao(){
         this.pPosicao.volta();
     }
 
-    public int getContador_moedas(){
-        return this.contador_moedas;
-    }
-
-    public int setContador_moedas(int contador_moedas){
-        this.contador_moedas = contador_moedas;
-        return contador_moedas;
-    }
-    
-    
     public boolean setPosicao(int linha, int coluna){
         if(this.pPosicao.setPosicao(linha, coluna)){
             if (!Desenho.acessoATelaDoJogo().ehPosicaoValida(this.getPosicao())) {

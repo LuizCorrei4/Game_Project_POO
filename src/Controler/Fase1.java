@@ -13,7 +13,7 @@ public class Fase1 extends Tela {
     public Fase1() {
         faseAtual = new ArrayList<Personagem>();
         int contador_moeda = 0;
-        this.moedas = new ArrayList<Moeda>(3);
+        this.moedas = new ArrayList<Moeda>(4);
 
         // Posição inicial do herói
         hero.setPosicao(this.spawn.getLinha(), this.spawn.getColuna()); // posição de entrada no labirinto
@@ -23,11 +23,11 @@ public class Fase1 extends Tela {
 
         String[] labirinto = {
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",
-                "@               B      @@@@@@@",
-                "@  @    @@@@  @@   @C        @",
+                "@                  @   @@@@@@@",
+                "@  @    @@@@B @@   @C        @",
                 "@  @@@@@@     @@   @@@@@    @@",
-                "@C                 @      @@@@",
-                "@@@  @@@@@@@@@     @    @@@@@@",
+                "@C            @@    @      @@@",
+                "@@@  @@@@@@@@@@@    @    @@@@@@",
                 "@    @     @              N@@@",
                 "@    @     @    @@@@@@@@@@@@@@",
                 "@  N     B @    @@@@         @",
@@ -35,7 +35,7 @@ public class Fase1 extends Tela {
                 "@  @@          B        @@ K @",
                 "@  @@  @@@@@   @    @@@@@@   @",
                 "@  @@@@@  @@   @@@@@@        @",
-                "@         @@C                @",
+                "@C        @@C                @",
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
         };
 
@@ -59,6 +59,7 @@ public class Fase1 extends Tela {
                     this.addPersonagem(moeda);
                 }
 
+
             }
         }
 
@@ -79,7 +80,7 @@ public class Fase1 extends Tela {
         this.addPersonagem(b2);
 
         BichinhoVaiVemHorizontal b3 = new BichinhoVaiVemHorizontal("RedPlanet.png");
-        b3.setPosicao(1,12);
+        b3.setPosicao(2,12);
         this.addPersonagem(b3);
 
 

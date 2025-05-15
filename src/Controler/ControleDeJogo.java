@@ -51,7 +51,6 @@ public class ControleDeJogo {
             // Verifica se o personagem vai morrer
             if (hero.getPosicao().igual(pIesimoPersonagem.getPosicao()) && pIesimoPersonagem.isbAssasino()) {
                 hero.setPosicao(spawn.getLinha(), spawn.getColuna());
-                hero.setContador_moedas(0);
                 break;
             }
         }
