@@ -13,11 +13,13 @@ import java.io.Serializable;
 public class NaveInimiga extends Personagem implements Serializable{
     private int iContaIntervalos;
     int direcao;
+    String umNomeProjetil;
 
-    public NaveInimiga(String sNomeImagePNG, int direcao) {
+    public NaveInimiga(String sNomeImagePNG, String umNomeProjetil, int direcao) {
         super(sNomeImagePNG);
         this.bTransponivel = false;
         bMortal = false;
+        this.umNomeProjetil = umNomeProjetil;
         this.iContaIntervalos = 0;
         this.direcao = direcao;
     }
@@ -28,7 +30,7 @@ public class NaveInimiga extends Personagem implements Serializable{
         this.iContaIntervalos++;
         if(this.iContaIntervalos == Consts.TIMER){
             this.iContaIntervalos = 0;
-            Fogo f = new Fogo("projetil1_up.png", this.direcao);
+            Fogo f = new Fogo(umNomeProjetil, this.direcao);
             f.setPosicao(pPosicao.getLinha(),pPosicao.getColuna());
             Desenho.acessoATelaDoJogo().addPersonagem(f);
         }

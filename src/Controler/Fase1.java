@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Fase1 extends Tela {
-    Chave chave;
+
 
     public Fase1() {
         faseAtual = new ArrayList<Personagem>();
@@ -20,16 +20,16 @@ public class Fase1 extends Tela {
 
         String[] labirinto = {
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",
-                "@  @                   @@@@@@@",
-                "@  @    @@@@       @         @",
+                "@                      @@@@@@@",
+                "@  @    @@@@  @@   @         @",
                 "@  @@@@@@     @@   @@@@@    @@",
                 "@                  @      @@@@",
                 "@@@  @@@@@@@@@     @    @@@@@@",
-                "@    @     @               @@@",
+                "@    @     @              N@@@",
                 "@    @     @    @@@@@@@@@@@@@@",
-                "@          @    @@@@         @",
+                "@  N       @    @@@@         @",
                 "@  @@@@  @@@@@@@@@@@      @@@@",
-                "@  @@          @        @@ K @",
+                "@  @@                   @@ K @",
                 "@  @@  @@@@@   @    @@@@@@   @",
                 "@  @@@@@  @@   @@@@@@        @",
                 "@         @@                 @",
@@ -52,6 +52,16 @@ public class Fase1 extends Tela {
 
             }
         }
+
+        NaveInimiga nave1 = new NaveInimiga("Spaceship4.png","projetil3.png",Consts.UP);
+        nave1.setPosicao(8,3);
+        this.addPersonagem(nave1);
+
+        NaveInimiga nave2 = new NaveInimiga("Spaceship2_left.png","projetil1_left.png",Consts.LEFT);
+        nave2.setPosicao(6,27);
+        this.addPersonagem(nave2);
+
+
 
 
         
@@ -86,7 +96,7 @@ public class Fase1 extends Tela {
         if (!this.faseAtual.isEmpty()) {
             this.cj.desenhaTudo(faseAtual);
             this.cj.processaTudo(faseAtual);
-            if (hero.getPosicao().igual(chave.getPosicao())) {
+            if (  hero.getPosicao().igual(chave.getPosicao())  ) {
                 carregarMenu();
             }
         }

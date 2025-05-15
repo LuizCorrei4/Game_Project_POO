@@ -19,9 +19,9 @@ public class Fase5 extends Tela{
         this.atualizaCamera();
         this.desenha_barreira();
 
-        // Um outro inimigo (Caveira)
-        NaveInimiga nV = new NaveInimiga("Spaceship2_right.png", Consts.RIGHT);
-        nV.setPosicao(9, 1);  // Posição inicial
+        // Um outro inimigo (NaveInimiga)
+        NaveInimiga nV = new NaveInimiga("Spaceship2_right.png", "projetil1_right.png" , Consts.RIGHT);
+        nV.setPosicao(4, 3);  // Posição inicial
         this.addPersonagem(nV);
 
     }

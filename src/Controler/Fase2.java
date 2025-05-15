@@ -20,7 +20,7 @@ public class Fase2 extends Tela{
         String[] labirinto = {
                 // colunas de 0 a 29 (linha 0 e 14 são margens visuais, não terão barreiras)
                 "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",  // Linha 0 - borda
-                "O.☆.....O.....♆.....☄........",
+                "O.......O.....♆.....☄........",
                 "OOOOO.OOOOOO.OOOOOOO.OOOOOOO..",
                 "O.....♆..........☆.........☄.",
                 "O.OOOOO.OOOOOOOOO.OOOOO.OOOOO.",
@@ -46,6 +46,17 @@ public class Fase2 extends Tela{
             }
         }
 
+        chave = new Chave("KeyIcons2.png");
+        chave.setPosicao(13, 27); // posição da seta de saída
+        this.addPersonagem(chave);
+
+        NaveInimiga nV = new NaveInimiga("Spaceship2_down.png", "projetil1_down.png" ,Consts.DOWN);
+        nV.setPosicao(2, 20);  // Posição inicial
+        this.addPersonagem(nV);
+
+        NaveInimiga nV2 = new NaveInimiga("Spaceship2_right.png", "projetil1_right.png" , Consts.RIGHT);
+        nV2.setPosicao(3, 3);  // Posição inicial
+        this.addPersonagem(nV2);
 
     }
 
@@ -79,6 +90,10 @@ public class Fase2 extends Tela{
         if (!this.faseAtual.isEmpty()) {
             this.cj.desenhaTudo(faseAtual);
             this.cj.processaTudo(faseAtual);
+            if (  hero.getPosicao().igual(chave.getPosicao())  ) {
+                carregarMenu();
+            }
+            this.atualizaCamera();
         }
 
         g.dispose();

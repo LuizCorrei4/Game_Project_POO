@@ -8,6 +8,7 @@ public class Chave extends Personagem{
         super(sNomeImagePNG);
         this.bTransponivel = true;
         this.bMortal = false;
+
     }
 
     public void autoDesenho() {
