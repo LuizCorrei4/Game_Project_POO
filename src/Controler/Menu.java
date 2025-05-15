@@ -45,6 +45,7 @@ public class Menu extends Tela{
             this.addPersonagem(temp);
         }
 
+        // Buracos Negros
         BuracoNegro fase1 = new BuracoNegro("BuracoNegro.png");
         fase1.setPosicao(3, 10);
         this.addPersonagem(fase1);
@@ -70,6 +71,7 @@ public class Menu extends Tela{
         this.addPersonagem(fase5);
         buracosNegros.add(fase5);
 
+// Estrelas
         Decoracao star1 = new Decoracao("YellowStars2.png");
         star1.setPosicao(2, 12);
         this.addPersonagem(star1);
@@ -86,17 +88,44 @@ public class Menu extends Tela{
         star4.setPosicao(12, 12);
         this.addPersonagem(star4);
 
+// Naves e planetas (evitando repetição de nomes)
         Decoracao nave1 = new Decoracao("UfoGrey1.png");
-        nave1.setPosicao(10, 4);
+        nave1.setPosicao(7, 3);
         this.addPersonagem(nave1);
 
         Decoracao foguete = new Decoracao("RocketWhite.png");
         foguete.setPosicao(4, 7);
         this.addPersonagem(foguete);
 
-        Decoracao saturno = new Decoracao("saturno.png");
-        saturno.setPosicao(8, 5);
-        this.addPersonagem(saturno);
+        Decoracao planeta1 = new Decoracao("RedPlanet.png");
+        planeta1.setPosicao(8, 5);
+        this.addPersonagem(planeta1);
+
+        Decoracao satelite = new Decoracao("Satellite.png");
+        satelite.setPosicao(10, 7); // posição ajustada para não repetir
+        this.addPersonagem(satelite);
+
+        Decoracao terra = new Decoracao("Earth.png");
+        terra.setPosicao(4, 9); // posição ajustada
+        this.addPersonagem(terra);
+
+        Decoracao sol = new Decoracao("Sun.png");
+        sol.setPosicao(7, 8); // posição ajustada
+        this.addPersonagem(sol);
+
+        Decoracao lua = new Decoracao("WhiteMoon.png");
+        lua.setPosicao(12, 9); // posição ajustada
+        this.addPersonagem(lua);
+
+        Decoracao nave2 = new Decoracao("Spaceship1.png");
+        nave2.setPosicao(11, 4); // posição ajustada
+        this.addPersonagem(nave2);
+
+        Decoracao nave3 = new Decoracao("Spaceship4.png");
+        nave3.setPosicao(8, 12); // posição ajustada
+        this.addPersonagem(nave3);
+
+
 
         Numero one = new Numero("n1.png");
         one.setPosicao(3, 9);

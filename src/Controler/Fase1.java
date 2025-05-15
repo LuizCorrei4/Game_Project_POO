@@ -19,37 +19,40 @@ public class Fase1 extends Tela {
         this.atualizaCamera();
 
         String[] labirinto = {
-                "OOOOOOOOOOOOOOOOOOOOOOOOOOOOO0O",
-                "O.S.....O....O.O.S.O.....T...0O",
-                "OOOOO.OOOOOO.OOOOOOO.OOOOOOO.O0",
-                "O........O....S....O.......O.O0",
-                "O.OOOOO.OOOOOOOOO.OOOOO.OOOOOO0",
-                "O.T.....O....O.......O....S..O0",
-                "OOOOOOO.O.OOOOOOOOO.OOOOOOO.OO0",
-                "O.....O.S.....O.....T.....S.O00",
-                "OO.OOOOOOOOO.OOOOO.OOOOO.OOOOO0",
-                "O.....O...S.....O.....T.....O.O",
-                "OOOO.OO..OOOOOOOOOOO.OOOOOO.OO0",
-                "O...........T..............SO00",
-                "OOOOO.OOOOO.OOOOO.OOOOO.OOOOOO0",
-                "O.S.....O.......T...O.......O.O",
-                "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO0"
+                "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",
+                "@  @                   @@@@@@@",
+                "@  @    @@@@       @         @",
+                "@  @@@@@@     @@   @@@@@    @@",
+                "@                  @      @@@@",
+                "@@@  @@@@@@@@@     @    @@@@@@",
+                "@    @     @               @@@",
+                "@    @     @    @@@@@@@@@@@@@@",
+                "@          @    @@@@         @",
+                "@  @@@@  @@@@@@@@@@@      @@@@",
+                "@  @@          @        @@ K @",
+                "@  @@  @@@@@   @    @@@@@@   @",
+                "@  @@@@@  @@   @@@@@@        @",
+                "@         @@                 @",
+                "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
         };
+
 
         for (int linha = 0; linha < labirinto.length; linha++) {
             for (int coluna = 0; coluna < labirinto[linha].length(); coluna++) {
-                if (labirinto[linha].charAt(coluna) == 'O') {
+                if (labirinto[linha].charAt(coluna) == '@') {
                     Barreira barreira = new Barreira("asteroid.png");
                     barreira.setPosicao(linha, coluna);
-                    this.addPersonagem(barreira);
+                    this.addPersonagem(barreira);}
+                if (labirinto[linha].charAt(coluna)=='K'){
+                    // Coloca a chave
+                    chave = new Chave("KeyIcons1.png");
+                    chave.setPosicao(linha, coluna); // posição da seta de saída
+                    this.addPersonagem(chave);
                 }
+
             }
         }
 
-        // Coloca a chave
-        chave = new Chave("KeyIcons1.png");
-        chave.setPosicao(7, 28); // posição da seta de saída
-        this.addPersonagem(chave);
 
         
     }
