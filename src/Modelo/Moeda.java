@@ -39,8 +39,8 @@ public class Moeda extends Personagem{
             Image imagemOriginal = iconOriginal.getImage();
 
             BufferedImage imagemRedimensionada = new BufferedImage(
-                    Consts.CELL_SIDE/2,
-                    Consts.CELL_SIDE/2,
+                    (Consts.CELL_SIDE)/2,
+                    (Consts.CELL_SIDE)/2,
                     BufferedImage.TYPE_INT_ARGB
             );
 

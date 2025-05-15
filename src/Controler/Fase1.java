@@ -18,12 +18,13 @@ public class Fase1 extends Tela {
         this.addPersonagem(hero);
         this.atualizaCamera();
 
+
         String[] labirinto = {
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",
                 "@               B      @@@@@@@",
-                "@  @    @@@@  @@   @         @",
+                "@  @    @@@@  @@   @C        @",
                 "@  @@@@@@     @@   @@@@@    @@",
-                "@                  @      @@@@",
+                "@C                 @      @@@@",
                 "@@@  @@@@@@@@@     @    @@@@@@",
                 "@    @     @              N@@@",
                 "@    @     @    @@@@@@@@@@@@@@",
@@ -32,7 +33,7 @@ public class Fase1 extends Tela {
                 "@  @@          B        @@ K @",
                 "@  @@  @@@@@   @    @@@@@@   @",
                 "@  @@@@@  @@   @@@@@@        @",
-                "@         @@                 @",
+                "@         @@C                @",
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
         };
 
@@ -45,7 +46,7 @@ public class Fase1 extends Tela {
                     this.addPersonagem(barreira);}
                 if (labirinto[linha].charAt(coluna)=='K'){
                     // Coloca a chave
-                    chave = new Chave("KeyIcons1.png");
+                    chave = new Chave("KeyIcons1_translucent.png");
                     chave.setPosicao(linha, coluna); // posição da seta de saída
                     this.addPersonagem(chave);
                 }
@@ -108,9 +109,19 @@ public class Fase1 extends Tela {
         if (!this.faseAtual.isEmpty()) {
             this.cj.desenhaTudo(faseAtual);
             this.cj.processaTudo(faseAtual);
-            if (  hero.getPosicao().igual(chave.getPosicao())  ) {
+
+            for(Moeda c : moedas) {
+                if( c.isCatched() ){
+                    moedas.remove(c);
+                }
+            }
+            if (moedas.isEmpty()){
+                this.chave.setImage("KeyIcons1.png");
+            }
+            if (  hero.getPosicao().igual(chave.getPosicao()) && moedas.isEmpty()) {
                 carregarMenu();
             }
+            this.atualizaCamera();
         }
         g.dispose();
         g2.dispose();

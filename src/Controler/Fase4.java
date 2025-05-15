@@ -21,9 +21,9 @@ public class Fase4 extends Tela{
                 // colunas de 0 a 29 (linha 0 e 14 são margens visuais, não terão barreiras)
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",
                 "@H                      @   K@",
-                "@@@@@@@  @       N@@@@@@@  B @",
+                "@@@@@@@  @        @@@@@@@  B @",
                 "@     B  @@@@@@@@@@     @@@  @",
-                "@                       @    @",
+                "@N                      @    @",
                 "@@@@  @@@@@@@@@@@@@@@@@@@    @",
                 "@     @@                     @",
                 "@     @@B @@@@@@@@@@@@@@@@@@@@",
@@ -44,7 +44,7 @@ public class Fase4 extends Tela{
                     this.addPersonagem(barreira);}
                 if (labirinto[linha].charAt(coluna)=='K'){
                     // Coloca a chave
-                    chave = new Chave("KeyIcons3.png");
+                    chave = new Chave("KeyIcons4_translucent.png");
                     chave.setPosicao(linha, coluna); // posição da seta de saída
                     this.addPersonagem(chave);
                 }
@@ -53,7 +53,7 @@ public class Fase4 extends Tela{
         }
 
         BichinhoVaiVemHorizontal b1 = new BichinhoVaiVemHorizontal("UfoBlue.png");
-        b1.setPosicao(3,5);
+        b1.setPosicao(2,7);
         this.addPersonagem(b1);
 
         BichinhoVaiVemVertical b2 = new BichinhoVaiVemVertical("UfoGrey1.png");
@@ -65,19 +65,19 @@ public class Fase4 extends Tela{
         this.addPersonagem(b3);
 
         BichinhoVaiVemHorizontal b4 = new BichinhoVaiVemHorizontal("PurplePlanet.png");
-        b4.setPosicao(12,4);
+        b4.setPosicao(12,5);
         this.addPersonagem(b4);
 
         BichinhoVaiVemHorizontal b5 = new BichinhoVaiVemHorizontal("Saturn2.png");
-        b5.setPosicao(2,27);
+        b5.setPosicao(3,27);
         this.addPersonagem(b5);
 
         NaveInimiga nave1 = new NaveInimiga("Spaceship4.png","projetil3.png",Consts.UP);
-        nave1.setPosicao(2,16);
+        nave1.setPosicao(11,19);
         this.addPersonagem(nave1);
 
         NaveInimiga nave2 = new NaveInimiga("Spaceship2_right.png","projetil1_right.png", Consts.RIGHT);
-        nave2.setPosicao(11,19);
+        nave2.setPosicao(4,1);
         this.addPersonagem(nave2);
 
 
@@ -115,6 +115,19 @@ public class Fase4 extends Tela{
         if (!this.faseAtual.isEmpty()) {
             this.cj.desenhaTudo(faseAtual);
             this.cj.processaTudo(faseAtual);
+
+            for(Moeda c : moedas) {
+                if( c.isCatched() ){
+                    moedas.remove(c);
+                }
+            }
+            if (moedas.isEmpty()){
+                this.chave.setImage("KeyIcons4.png");
+            }
+            if (  hero.getPosicao().igual(chave.getPosicao()) && moedas.isEmpty()) {
+                carregarMenu();
+            }
+            this.atualizaCamera();
         }
 
         g.dispose();
