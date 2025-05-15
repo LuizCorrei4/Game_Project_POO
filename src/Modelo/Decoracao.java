@@ -13,6 +13,7 @@ public class Decoracao extends Personagem{
         super(sNomeImagePNG);
         this.bTransponivel = true;
         this.bMortal = false;
+        this.bAssasino= false;
     }
 
     public void autoDesenho() {

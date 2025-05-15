@@ -12,27 +12,30 @@ public class Fase4 extends Tela{
 
     public Fase4() {
         faseAtual = new ArrayList<Personagem>();
+        int contador_moeda = 0;
+        this.moedas = new ArrayList<Moeda>(4);
+
         hero.setPosicao(this.spawn.getLinha(), this.spawn.getColuna());
         this.addPersonagem(hero);
         this.atualizaCamera();
-        this.desenha_barreira();
+        //this.desenha_barreira();
 
         String[] labirinto = {
                 // colunas de 0 a 29 (linha 0 e 14 são margens visuais, não terão barreiras)
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",
-                "@H                      @   K@",
-                "@@@@@@@  @        @@@@@@@  B @",
-                "@     B  @@@@@@@@@@     @@@  @",
+                "@H                C     @   K@",
+                "@@@@@@@BC@        @@@@@@@  B @",
+                "@        @@@@@@@@@@     @@@  @",
                 "@N                      @    @",
                 "@@@@  @@@@@@@@@@@@@@@@@@@    @",
                 "@     @@                     @",
                 "@     @@B @@@@@@@@@@@@@@@@@@@@",
-                "@     @@                     @",
+                "@     @@      C              @",
                 "@  @@@@@@@@@@@@@@@@@@@@@@@@  @",
                 "@  @              @    B @@  @",
                 "@  @              @N         @",
                 "@  @@B @@@@@@@@@@@@@@@  @@@@@@",
-                "@                            @",
+                "@C                           @",
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
         };
 
@@ -47,6 +50,12 @@ public class Fase4 extends Tela{
                     chave = new Chave("KeyIcons4_translucent.png");
                     chave.setPosicao(linha, coluna); // posição da seta de saída
                     this.addPersonagem(chave);
+                }
+                if (labirinto[linha].charAt(coluna)=='C'){
+                    Moeda moeda = new Moeda("coin.png");
+                    moeda.setPosicao(linha, coluna);
+                    this.moedas.add(moeda);
+                    this.addPersonagem(moeda);
                 }
 
             }

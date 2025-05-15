@@ -17,27 +17,27 @@ public class Fase3 extends Tela{
         this.addPersonagem(hero);
         this.atualizaCamera();
         this.desenha_barreira();
+        int contador_moeda = 0;
+        this.moedas = new ArrayList<Moeda>(3);
 
-        chave = new Chave("KeyIcons2.png");
-        chave.setPosicao(13, 25);
-        this.addPersonagem(chave);
+
 
         String[] labirinto = {
                 // colunas de 0 a 29 (linha 0 e 14 são margens visuais, não terão barreiras)
                 "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-                "O.D...O...E....O.P.O.X....O.O",
+                "O.D...O...E....O.P.O.X.C..O.O",
                 "OOOOO.OOOOOO.OOO...O.OOOOOOO.O",
-                "O.....R.......P.....E.....D..O",
+                "O.....R...C...P.....E.....D..O",
                 "O.OOOOO.OOOOOOOOO.OOOOO.OOOOOO",
                 "O.X...O....O.P....O...R...O.O",
                 "OOOOO.O.OOOOOOOOO.OOOOOOO.OOOO",
-                "O...R...O.....D.O.....X....O.O",
+                "O...R...O..C..D.O.....X....O.O",
                 "OO.OOOOOOOOO.OOOOO.OOOOO.OOOOO",
-                "O.P...O.....E.....O.....R...O.O",
+                "O.P...O.....E..... .....R...O.O",
                 "OOOO.OOO.OOOOOOOOOOO.OOOOOO.OO",
                 "O.....O...X.....O........D.O",
                 "OOOOO.OOOOO.OOOOO.OOOOO.OOOOOO",
-                "O.E...O.P.....R...O.X.....O.O",
+                "O.E...O.P.....R...O.X....KO.O",
                 "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
         };
 
@@ -48,12 +48,24 @@ public class Fase3 extends Tela{
                     barreira.setPosicao(linha, coluna);
                     this.addPersonagem(barreira);
                 }
+                if (labirinto[linha].charAt(coluna)=='C'){
+                    Moeda moeda = new Moeda("coin.png");
+                    moeda.setPosicao(linha, coluna);
+                    this.moedas.add(moeda);
+                    this.addPersonagem(moeda);
+                }
+                if (labirinto[linha].charAt(coluna)=='K'){
+                    // Coloca a chave
+                    chave = new Chave("KeyIcons3_translucent.png");
+                    chave.setPosicao(linha, coluna); // posição da seta de saída
+                    this.addPersonagem(chave);
+                }
             }
         }
 
 
         ZigueZague zig = new ZigueZague("UfoBlue.png");
-        zig.setPosicao(20,20);
+        zig.setPosicao(22,20);
         this.addPersonagem(zig);
 
     }
@@ -88,6 +100,19 @@ public class Fase3 extends Tela{
         if (!this.faseAtual.isEmpty()) {
             this.cj.desenhaTudo(faseAtual);
             this.cj.processaTudo(faseAtual);
+
+            for(Moeda c : moedas) {
+                if( c.isCatched() ){
+                    moedas.remove(c);
+                }
+            }
+            if (moedas.isEmpty()){
+                this.chave.setImage("KeyIcons3.png");
+            }
+            if (hero.getPosicao().igual(chave.getPosicao()) && moedas.isEmpty()) {
+                carregarMenu();
+            }
+            this.atualizaCamera();
         }
 
         g.dispose();

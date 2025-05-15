@@ -12,6 +12,8 @@ public class Fase1 extends Tela {
 
     public Fase1() {
         faseAtual = new ArrayList<Personagem>();
+        int contador_moeda = 0;
+        this.moedas = new ArrayList<Moeda>(4);
 
         // Posição inicial do herói
         hero.setPosicao(this.spawn.getLinha(), this.spawn.getColuna()); // posição de entrada no labirinto
@@ -33,7 +35,7 @@ public class Fase1 extends Tela {
                 "@  @@          B        @@ K @",
                 "@  @@  @@@@@   @    @@@@@@   @",
                 "@  @@@@@  @@   @@@@@@        @",
-                "@         @@C                @",
+                "@C        @@C                @",
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
         };
 
@@ -49,6 +51,12 @@ public class Fase1 extends Tela {
                     chave = new Chave("KeyIcons1_translucent.png");
                     chave.setPosicao(linha, coluna); // posição da seta de saída
                     this.addPersonagem(chave);
+                }
+                if (labirinto[linha].charAt(coluna)=='C'){
+                    Moeda moeda = new Moeda("coin.png");
+                    moeda.setPosicao(linha, coluna);
+                    this.moedas.add(moeda);
+                    this.addPersonagem(moeda);
                 }
 
             }

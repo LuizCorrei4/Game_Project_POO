@@ -38,21 +38,31 @@ public class Moeda extends Personagem{
             ImageIcon iconOriginal = new ImageIcon(caminhoImagem);
             Image imagemOriginal = iconOriginal.getImage();
 
-            BufferedImage imagemRedimensionada = new BufferedImage(
-                    (Consts.CELL_SIDE)/2,
-                    (Consts.CELL_SIDE)/2,
+            // Cria uma imagem do tamanho da célula
+            BufferedImage imagemFinal = new BufferedImage(
+                    Consts.CELL_SIDE,
+                    Consts.CELL_SIDE,
                     BufferedImage.TYPE_INT_ARGB
             );
 
-            Graphics g = imagemRedimensionada.createGraphics();
-            g.drawImage(imagemOriginal, 0, 0, Consts.CELL_SIDE/2, Consts.CELL_SIDE/2, null);
-            g.dispose(); // libera recursos do gráfico
+            Graphics g = imagemFinal.createGraphics();
 
-            return new ImageIcon(imagemRedimensionada);
+            // Calcula o deslocamento para centralizar a imagem menor
+            int larguraMoeda = Consts.CELL_SIDE / 2;
+            int alturaMoeda = Consts.CELL_SIDE / 2;
+            int offsetX = (Consts.CELL_SIDE - larguraMoeda) / 2;
+            int offsetY = (Consts.CELL_SIDE - alturaMoeda) / 2;
+
+            // Desenha a imagem redimensionada no centro
+            g.drawImage(imagemOriginal, offsetX, offsetY, larguraMoeda, alturaMoeda, null);
+            g.dispose();
+
+            return new ImageIcon(imagemFinal);
 
         } catch (IOException e) {
             System.out.println("Erro ao carregar imagem: " + e.getMessage());
             return null;
         }
     }
+
 }

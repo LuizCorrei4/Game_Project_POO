@@ -22,21 +22,11 @@ public class Fase2 extends Tela{
         this.moedas = new ArrayList<Moeda>(3);
 
 
-        // adicionando moedas na fase
-        for(int i = 0; i <= 2; i++){
-            this.moedas.add(new Moeda("coin.png"));
-            this.addPersonagem(moedas.get(i));
-        }
-        moedas.get(0).setPosicao(1,  5);
-        moedas.get(1).setPosicao(1,  6);
-        moedas.get(2).setPosicao(1,  7);
-
-
 
         String[] labirinto = {
                 // colunas de 0 a 29 (linha 0 e 14 são margens visuais, não terão barreiras)
                 "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",  // Linha 0 - borda
-                "O.......O.....♆.....☄........",
+                "O....CCCO.....♆.....☄........",
                 "OOOOO.OOOOOO.OOOOOOO.OOOOOOO..",
                 "O.....♆..........☆.........☄.",
                 "O.OOOOO.OOOOOOOOO.OOOOO.OOOOO.",
@@ -48,7 +38,7 @@ public class Fase2 extends Tela{
                 "OOOO.OOO.OOOOOOOOOOO.OOOOOO.O.",
                 "O.......O...☄.....O........☆.",
                 "OOOOO.OOOOO.OOOOO.OOOOO.OOOOO.",
-                "O.♆.....O.......☄...O........",
+                "O.♆.....O.......☄...O.....K..",
                 "OOOOOOOOOOOOOOOOOOOOOOOOOOOOO."
         };
 
@@ -59,12 +49,22 @@ public class Fase2 extends Tela{
                     barreira.setPosicao(linha, coluna);
                     this.addPersonagem(barreira);
                 }
+                if (labirinto[linha].charAt(coluna)=='C'){
+                    Moeda moeda = new Moeda("coin.png");
+                    moeda.setPosicao(linha, coluna);
+                    this.moedas.add(moeda);
+                    this.addPersonagem(moeda);
+                }
+                if (labirinto[linha].charAt(coluna)=='K'){
+                    // Coloca a chave
+                    chave = new Chave("KeyIcons2_translucent.png");
+                    chave.setPosicao(linha, coluna); // posição da seta de saída
+                    this.addPersonagem(chave);
+                }
             }
         }
 
-        chave = new Chave("KeyIcons2_translucent.png");
-        chave.setPosicao(13, 27); // posição da seta de saída
-        this.addPersonagem(chave);
+
 
         NaveInimiga nV = new NaveInimiga("Spaceship2_down.png", "projetil1_down.png" ,Consts.DOWN);
         nV.setPosicao(0, 20);  // Posição inicial
@@ -74,7 +74,7 @@ public class Fase2 extends Tela{
         nV2.setPosicao(3, 1);  // Posição inicial
         this.addPersonagem(nV2);
 
-        BichinhoVaiVemHorizontal bichinho = new BichinhoVaiVemHorizontal("UfoGrey1.png");
+        BichinhoVaiVemHorizontal bichinho = new BichinhoVaiVemHorizontal("UfoBlue.png");
         bichinho.setPosicao(1, 11);
         this.addPersonagem(bichinho);
 
@@ -131,7 +131,7 @@ public class Fase2 extends Tela{
             if (moedas.isEmpty()){
                 this.chave.setImage("KeyIcons2.png");
             }
-            if (  hero.getPosicao().igual(chave.getPosicao()) && moedas.isEmpty()) {
+            if (hero.getPosicao().igual(chave.getPosicao()) && moedas.isEmpty()) {
                 carregarMenu();
             }
             this.atualizaCamera();
