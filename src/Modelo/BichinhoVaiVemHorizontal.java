@@ -20,6 +20,7 @@ public class BichinhoVaiVemHorizontal extends Personagem implements Serializable
         super(sNomeImagePNG);
         bRight = true;
         iContador = 0;
+        this.bAssasino = true;
     }
 
     public void autoDesenho() {

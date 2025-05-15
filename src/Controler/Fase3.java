@@ -18,12 +18,16 @@ public class Fase3 extends Tela{
         this.atualizaCamera();
         this.desenha_barreira();
 
+        chave = new Chave("KeyIcons2.png");
+        chave.setPosicao(13, 25);
+        this.addPersonagem(chave);
+
         String[] labirinto = {
                 // colunas de 0 a 29 (linha 0 e 14 são margens visuais, não terão barreiras)
                 "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
                 "O.D...O...E....O.P.O.X....O.O",
-                "OOOOO.OOOOOO.OOOOOOO.OOOOOOO.O",
-                "O.....R.....O.P.....E.....D..O",
+                "OOOOO.OOOOOO.OOO...O.OOOOOOO.O",
+                "O.....R.......P.....E.....D..O",
                 "O.OOOOO.OOOOOOOOO.OOOOO.OOOOOO",
                 "O.X...O....O.P....O...R...O.O",
                 "OOOOO.O.OOOOOOOOO.OOOOOOO.OOOO",
@@ -47,6 +51,10 @@ public class Fase3 extends Tela{
             }
         }
 
+
+        ZigueZague zig = new ZigueZague("UfoBlue.png");
+        zig.setPosicao(20,20);
+        this.addPersonagem(zig);
 
     }
 
