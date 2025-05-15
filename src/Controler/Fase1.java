@@ -13,7 +13,7 @@ public class Fase1 extends Tela {
     public Fase1() {
         faseAtual = new ArrayList<Personagem>();
         int contador_moeda = 0;
-        this.moedas = new ArrayList<Moeda>(4);
+        this.moedas = new ArrayList<Moeda>(3);
 
         // Posição inicial do herói
         hero.setPosicao(this.spawn.getLinha(), this.spawn.getColuna()); // posição de entrada no labirinto
@@ -35,7 +35,7 @@ public class Fase1 extends Tela {
                 "@  @@          B        @@ K @",
                 "@  @@  @@@@@   @    @@@@@@   @",
                 "@  @@@@@  @@   @@@@@@        @",
-                "@C        @@C                @",
+                "@         @@C                @",
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
         };
 
