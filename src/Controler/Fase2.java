@@ -18,6 +18,20 @@ public class Fase2 extends Tela{
         this.addPersonagem(hero);
         this.atualizaCamera();
         this.desenha_barreira();
+        int contador_moeda = 0;
+        this.moedas = new ArrayList<Moeda>(3);
+
+
+        // adicionando moedas na fase
+        for(int i = 0; i <= 2; i++){
+            this.moedas.add(new Moeda("coin.png"));
+            this.addPersonagem(moedas.get(i));
+        }
+        moedas.get(0).setPosicao(1,  5);
+        moedas.get(1).setPosicao(1,  6);
+        moedas.get(2).setPosicao(1,  7);
+
+
 
         String[] labirinto = {
                 // colunas de 0 a 29 (linha 0 e 14 são margens visuais, não terão barreiras)
@@ -48,7 +62,7 @@ public class Fase2 extends Tela{
             }
         }
 
-        chave = new Chave("KeyIcons2.png");
+        chave = new Chave("KeyIcons2_translucent.png");
         chave.setPosicao(13, 27); // posição da seta de saída
         this.addPersonagem(chave);
 
@@ -60,7 +74,7 @@ public class Fase2 extends Tela{
         nV2.setPosicao(3, 1);  // Posição inicial
         this.addPersonagem(nV2);
 
-        BichinhoVaiVemHorizontal bichinho = new BichinhoVaiVemHorizontal("UfoGrey.png");
+        BichinhoVaiVemHorizontal bichinho = new BichinhoVaiVemHorizontal("UfoGrey1.png");
         bichinho.setPosicao(1, 11);
         this.addPersonagem(bichinho);
 
@@ -68,7 +82,7 @@ public class Fase2 extends Tela{
         bichinho2.setPosicao(7, 12);
         this.addPersonagem(bichinho2);
 
-        BichinhoVaiVemHorizontal bichinho3 = new BichinhoVaiVemHorizontal("UfoGrey.png");
+        BichinhoVaiVemHorizontal bichinho3 = new BichinhoVaiVemHorizontal("UfoGrey1.png");
         bichinho3.setPosicao(9, 12);
         this.addPersonagem(bichinho3);
 
@@ -108,7 +122,16 @@ public class Fase2 extends Tela{
         if (!this.faseAtual.isEmpty()) {
             this.cj.desenhaTudo(faseAtual);
             this.cj.processaTudo(faseAtual);
-            if (  hero.getPosicao().igual(chave.getPosicao())  ) {
+
+            for(Moeda c : moedas) {
+                if( c.isCatched() ){
+                    moedas.remove(c);
+                }
+            }
+            if (moedas.isEmpty()){
+                this.chave.setImage("KeyIcons2.png");
+            }
+            if (  hero.getPosicao().igual(chave.getPosicao()) && moedas.isEmpty()) {
                 carregarMenu();
             }
             this.atualizaCamera();

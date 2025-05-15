@@ -33,6 +33,7 @@ public abstract class Tela extends javax.swing.JFrame implements KeyListener {
     protected int cameraLinha = 0;
     protected int cameraColuna = 0;
     protected Chave chave;
+    protected ArrayList<Moeda> moedas;
 
     // Construtor da tela
     public Tela() {
