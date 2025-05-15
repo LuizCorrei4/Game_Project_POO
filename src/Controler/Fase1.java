@@ -20,16 +20,16 @@ public class Fase1 extends Tela {
 
         String[] labirinto = {
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",
-                "@                      @@@@@@@",
+                "@               B      @@@@@@@",
                 "@  @    @@@@  @@   @         @",
                 "@  @@@@@@     @@   @@@@@    @@",
                 "@                  @      @@@@",
                 "@@@  @@@@@@@@@     @    @@@@@@",
                 "@    @     @              N@@@",
                 "@    @     @    @@@@@@@@@@@@@@",
-                "@  N       @    @@@@         @",
-                "@  @@@@  @@@@@@@@@@@      @@@@",
-                "@  @@                   @@ K @",
+                "@  N     B @    @@@@         @",
+                "@  @@@@  @@@@@@@@@@@     @@@@@",
+                "@  @@          B        @@ K @",
                 "@  @@  @@@@@   @    @@@@@@   @",
                 "@  @@@@@  @@   @@@@@@        @",
                 "@         @@                 @",
@@ -58,8 +58,20 @@ public class Fase1 extends Tela {
         this.addPersonagem(nave1);
 
         NaveInimiga nave2 = new NaveInimiga("Spaceship2_left.png","projetil1_left.png",Consts.LEFT);
-        nave2.setPosicao(6,27);
+        nave2.setPosicao(6,26);
         this.addPersonagem(nave2);
+
+        BichinhoVaiVemHorizontal b1 = new BichinhoVaiVemHorizontal("UfoBlue.png");
+        b1.setPosicao(8,7);
+        this.addPersonagem(b1);
+
+        BichinhoVaiVemVertical b2 = new BichinhoVaiVemVertical("UfoGrey1.png");
+        b2.setPosicao(11,12);
+        this.addPersonagem(b2);
+
+        BichinhoVaiVemHorizontal b3 = new BichinhoVaiVemHorizontal("RedPlanet.png");
+        b3.setPosicao(1,12);
+        this.addPersonagem(b3);
 
 
 
