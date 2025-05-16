@@ -23,8 +23,8 @@ public class Fase2 extends Tela{
 
 
         String[] labirinto = {
-                // colunas de 0 a 29 (linha 0 e 14 são margens visuais, não terão barreiras)
-                "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",  // Linha 0 - borda
+
+                "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
                 "O.......O..............S.....",
                 "OOOOO.OOOOOO.OOOOOOO.OOOOOOOC.",
                 "O............W...............",
@@ -77,11 +77,11 @@ public class Fase2 extends Tela{
 
 
         NaveInimiga nV = new NaveInimiga("Spaceship2_down.png", "projetil1_down.png" ,Consts.DOWN);
-        nV.setPosicao(0, 20);  // Posição inicial
+        nV.setPosicao(0, 20);
         this.addPersonagem(nV);
 
         NaveInimiga nV2 = new NaveInimiga("Spaceship2_right.png", "projetil1_right.png" , Consts.RIGHT);
-        nV2.setPosicao(3, 1);  // Posição inicial
+        nV2.setPosicao(3, 1);
         this.addPersonagem(nV2);
 
         BichinhoVaiVemHorizontal bichinho = new BichinhoVaiVemHorizontal("UfoBlue.png");
@@ -111,10 +111,9 @@ public class Fase2 extends Tela{
  @Override
     public void paint(Graphics gOld) {
         Graphics g = this.getBufferStrategy().getDrawGraphics();
-        //Criamos um contexto gráfico
+
         g2 = g.create(getInsets().left, getInsets().top, getWidth() - getInsets().right, getHeight() - getInsets().top);
 
-        // Desenha cenário de fundo
 
         for (int i = 0; i < Consts.RES; i++) {
             for (int j = 0; j < Consts.RES; j++) {

@@ -38,7 +38,7 @@ public class ZigueZague extends Personagem {
                 case 4: proximaLinha += 2; proximaColuna += 1; break;
                 case 5: proximaLinha += 2; break;
                 case 6: proximaLinha += 1; break;
-                case 7: break; // volta ao início
+                case 7: break;
             }
 
             this.setPosicao(proximaLinha, proximaColuna);

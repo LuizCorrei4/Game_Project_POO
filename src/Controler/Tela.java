@@ -10,7 +10,7 @@ import Modelo.*;
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
 import Auxiliar.Posicao;
-import java.lang.Object;
+
 import javax.swing.JOptionPane;
 import java.awt.*;
 import java.io.File;
@@ -22,7 +22,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DnDConstants;
@@ -75,8 +74,10 @@ public abstract class Tela extends javax.swing.JFrame implements KeyListener {
         this.atualizaCamera();
 
 
+        //objetos salvos em .zip para colocar durante a fase
+
         NaveInimiga inimigo = new NaveInimiga("Spaceship4.png", "projetil3.png", Consts.UP);
-        PersonagemSaver.salvarPersonagem(inimigo, "arquivos_zip_dos_objetos/nave_inimiga.zip");
+        PersonagemSaver.salvarPersonagem(inimigo, "arquivos_zip_dos_objetos/nave_inimiga_up.zip");
 
         BichinhoVaiVemHorizontal bichinhoHo = new BichinhoVaiVemHorizontal("Sun.png");
         PersonagemSaver.salvarPersonagem(bichinhoHo, "arquivos_zip_dos_objetos/sol_bichinhohorizontal.zip");
@@ -84,11 +85,27 @@ public abstract class Tela extends javax.swing.JFrame implements KeyListener {
         BichinhoVaiVemVertical bichinhoVe = new BichinhoVaiVemVertical("RocketGrey.png");
         PersonagemSaver.salvarPersonagem(bichinhoVe, "arquivos_zip_dos_objetos/foguete_bichinhovertical.zip");
 
+        BichinhoVaiVemHorizontal bichinhoHo1 = new BichinhoVaiVemHorizontal("Earth.png");
+        PersonagemSaver.salvarPersonagem(bichinhoHo1, "arquivos_zip_dos_objetos/terra_bichinhohorizontal.zip");
+
+        BichinhoVaiVemVertical bichinhoVe1 = new BichinhoVaiVemVertical("Saturn2.png");
+        PersonagemSaver.salvarPersonagem(bichinhoVe1, "arquivos_zip_dos_objetos/saturno_bichinhovertical.zip");
+
         ZigueZague zig = new ZigueZague("UfoBlue.png");
-        PersonagemSaver.salvarPersonagem(zig, "arquivos_zip_dos_objetos/alien_zigzag.zip");
+        PersonagemSaver.salvarPersonagem(zig, "arquivos_zip_dos_objetos/alien_azul_zigzag.zip");
 
         ZigueZague zig1 = new ZigueZague("UfoGrey.png");
-        PersonagemSaver.salvarPersonagem(zig1, "arquivos_zip_dos_objetos/zigzag.zip");
+        PersonagemSaver.salvarPersonagem(zig1, "arquivos_zip_dos_objetos/alien_cinza_zigzag.zip");
+
+        NaveInimiga nv1 = new NaveInimiga("Spaceship2_right.png", "projetil1_right.png", Consts.RIGHT);
+        PersonagemSaver.salvarPersonagem(nv1, "arquivos_zip_dos_objetos/nave_inimiga_right.zip");
+
+        NaveInimiga nv2 = new NaveInimiga("Spaceship2_left.png", "projetil1_left.png", Consts.LEFT);
+        PersonagemSaver.salvarPersonagem(nv2, "arquivos_zip_dos_objetos/nave_inimiga_left.zip");
+
+        NaveInimiga nv3 = new NaveInimiga("Spaceship2_down.png", "projetil1_down.png", Consts.DOWN);
+        PersonagemSaver.salvarPersonagem(nv3, "arquivos_zip_dos_objetos/nave_inimiga_down.zip");
+
 
     }
 
@@ -125,38 +142,41 @@ public abstract class Tela extends javax.swing.JFrame implements KeyListener {
     }
 
 
+    
 
-    protected void adicionarPersonagemDeArquivo(File arquivoZip) {
-        try (ZipInputStream zis = new ZipInputStream(new FileInputStream(arquivoZip))) {
-            ZipEntry entry;
-            while ((entry = zis.getNextEntry()) != null) {
-                if (!entry.isDirectory() && entry.getName().endsWith(".ser")) {
-                    try (ObjectInputStream ois = new ObjectInputStream(zis)) {
-                        Personagem personagem = (Personagem) ois.readObject();
 
-                        // Converte coordenadas de tela para coordenadas do jogo
-                        Point dropPoint = getMousePosition();
-                        if (dropPoint != null) {
-                            int coluna = (dropPoint.x - getInsets().left) / Consts.CELL_SIDE + cameraColuna;
-                            int linha = (dropPoint.y - getInsets().top) / Consts.CELL_SIDE + cameraLinha;
+protected void adicionarPersonagemDeArquivo(File arquivoZip) {
+    try (ZipInputStream zis = new ZipInputStream(new FileInputStream(arquivoZip))) {
+        ZipEntry entry;
+        while ((entry = zis.getNextEntry()) != null) {
+            if (!entry.isDirectory() && entry.getName().endsWith(".ser")) {
+                // Remova o try-with-resources aqui e crie o ObjectInputStream diretamente
+                ObjectInputStream ois = new ObjectInputStream(zis);
+                Personagem personagem = (Personagem) ois.readObject();
 
-                            personagem.setPosicao(linha, coluna);
-                            addPersonagem(personagem);
+                // Converte coordenadas de tela para coordenadas do jogo
+                Point dropPoint = getMousePosition();
+                if (dropPoint != null) {
+                    int coluna = (dropPoint.x - getInsets().left) / Consts.CELL_SIDE + cameraColuna;
+                    int linha = (dropPoint.y - getInsets().top) / Consts.CELL_SIDE + cameraLinha;
 
-                            JOptionPane.showMessageDialog(this,
-                                    "Personagem adicionado com sucesso!",
-                                    "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-                        }
-                    }
+                    personagem.setPosicao(linha, coluna);
+                    addPersonagem(personagem);
+
+                    JOptionPane.showMessageDialog(this,
+                            "Personagem adicionado com sucesso!",
+                            "Sucesso", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this,
-                    "Erro ao ler arquivo: " + ex.getMessage(),
-                    "Erro", JOptionPane.ERROR_MESSAGE);
         }
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this,
+                "Erro ao ler arquivo: " + ex.getMessage(),
+                "Erro", JOptionPane.ERROR_MESSAGE);
     }
-    
+}
+
+
 
     protected void carregarMenu() {
         // Fecha o menu atual
@@ -336,6 +356,20 @@ public abstract class Tela extends javax.swing.JFrame implements KeyListener {
             this.faseAtual.clear();
         }
         else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            if (Save.allFasesCompleted()) {
+                this.setVisible(false);
+                Tela telafinal = new TelaFinal();
+                //fechar o menu e dps abrir a tela final
+                telafinal.setVisible(true);
+                telafinal.createBufferStrategy(2);
+                telafinal.go();
+                javax.swing.Timer timer = new javax.swing.Timer(8500, (evt) -> {
+                    System.exit(0);
+                });
+                timer.setRepeats(false); // Para que o timer execute apenas uma vez
+                timer.start();
+                return;
+            }
             carregarMenu();
             return;
         }
@@ -366,71 +400,50 @@ public abstract class Tela extends javax.swing.JFrame implements KeyListener {
                         JOptionPane.INFORMATION_MESSAGE);
             }
         }
-        // Verifica se a tecla pressionada foi 'UP' (seta para cima)
         else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            // Move o personagem (herói) para cima
             hero.moveUp();
             try {
-                // Troca a imagem do personagem para a imagem correspondente ao movimento para cima
                 hero.troca_imagem("player1_front1.png");
             } catch (IOException ex) {
-                // Lança uma exceção em caso de erro ao tentar trocar a imagem
                 throw new RuntimeException(ex);
             }
         }
-        // Verifica se a tecla pressionada foi 'DOWN' (seta para baixo)
         else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            // Move o personagem (herói) para baixo
             hero.moveDown();
             try {
-                // Troca a imagem do personagem para a imagem correspondente ao movimento para baixo
                 hero.troca_imagem("player1_front2.png");
             } catch (IOException ex) {
-                // Lança uma exceção em caso de erro ao tentar trocar a imagem
                 throw new RuntimeException(ex);
             }
         }
-        // Verifica se a tecla pressionada foi 'LEFT' (seta para a esquerda)
         else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            // Move o personagem (herói) para a esquerda
             hero.moveLeft();
             try {
-                // Troca a imagem do personagem para a imagem correspondente ao movimento para a esquerda
                 hero.troca_imagem("player1_left2.png");
             } catch (IOException ex) {
-                // Lança uma exceção em caso de erro ao tentar trocar a imagem
                 throw new RuntimeException(ex);
             }
         }
-        // Verifica se a tecla pressionada foi 'RIGHT' (seta para a direita)
         else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             try {
-                // Troca a imagem do personagem para a imagem correspondente ao movimento para a direita
                 hero.troca_imagem("player1_right2.png");
             } catch (IOException ex) {
-                // Lança uma exceção em caso de erro ao tentar trocar a imagem
                 throw new RuntimeException(ex);
             }
-            // Move o personagem (herói) para a direita
             hero.moveRight();
         }
 
-        // Atualiza a posição da câmera, para que ela acompanhe o personagem
         this.atualizaCamera();
 
         // Atualiza o título da janela para mostrar a posição atual do personagem
         this.setTitle("-> Cell: " + (hero.getPosicao().getColuna()) + ", "
                 + (hero.getPosicao().getLinha()));
 
-        // Desenha a tela novamente (comentado, mas poderia ser usado para redibujar a interface)
-        repaint(); /*invoca o paint imediatamente, sem aguardar o refresh*/
+        repaint();
     }
 
 
 
-
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">
-    // Este marcador é usado pelo NetBeans ou IDEs similares para permitir que esse bloco seja recolhido/expandido na interface.
 
     void initComponents() {
 
@@ -438,7 +451,7 @@ public abstract class Tela extends javax.swing.JFrame implements KeyListener {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         // Define o título da janela.
-        setTitle("POO2023-1 - Skooter");
+        setTitle("RunSpace");
 
         // Garante que essa janela fique sempre sobre as outras (útil para jogos ou aplicações visuais).
         setAlwaysOnTop(true);

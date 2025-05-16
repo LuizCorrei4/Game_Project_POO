@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.Timer;  // Para a classe Timer
+// Para a classe Timer
 import javax.swing.JOptionPane;  // Para a classe JOptionPane
 
 
@@ -89,15 +89,13 @@ public class Menu extends Tela{
             }
         }
 
-        // Verifica se todas as fases foram completadas
+
         showGameCompleted = Save.allFasesCompleted();
         if (Save.allFasesCompleted() && showGameCompleted) {
-            // Mostra a mensagem em uma caixa de diálogo
             JOptionPane.showMessageDialog(this,
-                    "Parabéns! Você completou já todas as fases do jogo!",
+                    "Parabéns! Você já completou todas as fases do jogo!\n Aperte 'esc' para finalizar ou 'R' para resetar seu progresso!",
                     "Jogo Completo",
                     JOptionPane.INFORMATION_MESSAGE);
-
         }
 
 // Estrelas
@@ -181,11 +179,9 @@ public class Menu extends Tela{
 
 
     private void carregarFase(int numeroFase) {
-        // Fecha o menu atual
         this.setVisible(false);
         this.dispose();
 
-        // Cria e exibe a nova fase
         Tela fase = null;
         switch(numeroFase) {
             case 1:

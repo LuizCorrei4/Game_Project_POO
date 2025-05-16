@@ -24,7 +24,6 @@ public class Numero extends Personagem {
 
             int ladoImagem = Consts.CELL_SIDE / 3;
 
-            // Cria imagem do tamanho da célula
             BufferedImage imagemFinal = new BufferedImage(
                     Consts.CELL_SIDE,
                     Consts.CELL_SIDE,
@@ -32,7 +31,6 @@ public class Numero extends Personagem {
             );
 
             Graphics g = imagemFinal.createGraphics();
-            // Desenha no canto superior direito
             g.drawImage(imagemOriginal,
                     Consts.CELL_SIDE - ladoImagem,  // x (borda direita)
                     0,                              // y (topo)

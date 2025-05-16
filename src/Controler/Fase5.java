@@ -76,7 +76,6 @@ public class Fase5 extends Tela{
             }
         }
 
-        // Inimigos com padrões de movimento distintos
         NaveInimiga nvVertical = new NaveInimiga("Spaceship2_right.png", "projetil1_right.png", Consts.RIGHT);
         nvVertical.setPosicao(12, 1);
         this.addPersonagem(nvVertical);
@@ -89,9 +88,6 @@ public class Fase5 extends Tela{
         nv3.setPosicao(7, 11);
         this.addPersonagem(nv3);
 
-        BichinhoVaiVemHorizontal nv4 = new BichinhoVaiVemHorizontal("tnt.png");
-        nv4.setPosicao(7, 14);
-        this.addPersonagem(nv4);
 
         NaveInimiga nv5 = new NaveInimiga("Spaceship2_up.png", "projetil3.png", Consts.UP);
         nv5.setPosicao(6, 12);
@@ -113,16 +109,15 @@ public class Fase5 extends Tela{
         b3.setPosicao(2,12);
         this.addPersonagem(b3);
 
-
+        super.arrasta();
 }
 
     @Override
     public void paint(Graphics gOld) {
         Graphics g = this.getBufferStrategy().getDrawGraphics();
-        //Criamos um contexto gráfico
+
         g2 = g.create(getInsets().left, getInsets().top, getWidth() - getInsets().right, getHeight() - getInsets().top);
 
-        // Desenha cenário de fundo
 
         for (int i = 0; i < Consts.RES; i++) {
             for (int j = 0; j < Consts.RES; j++) {

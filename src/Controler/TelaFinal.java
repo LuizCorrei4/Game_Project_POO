@@ -16,6 +16,9 @@ public class TelaFinal extends Tela{
     public TelaFinal() {
 
         faseAtual = new ArrayList<Personagem>();
+        hero.setPosicao(1, 7);
+        this.addPersonagem(hero);
+
 
         this.atualizaCamera();
 
@@ -63,7 +66,7 @@ public class TelaFinal extends Tela{
 
 
     }
-
+    @Override
     public void paint(Graphics gOld) {
 
         Graphics g = this.getBufferStrategy().getDrawGraphics();
@@ -114,7 +117,7 @@ public class TelaFinal extends Tela{
                         } else if( i == 6 && j== 9) {
                             imageName = "2.png"; // U
                         } else if( i == 6 && j== 10) {
-                            imageName = "L(1)png"; // L
+                            imageName = "L.png"; // L
                         } else if( i == 6 && j== 11) {
                             imageName = "6.png"; // A
                         } else if( i == 7 && j== 5) {
@@ -124,11 +127,11 @@ public class TelaFinal extends Tela{
                         } else if( i == 7 && j== 7) {
                             imageName = "6.png"; // A
                         } else if( i == 7 && j== 8) {
-                            imageName = "L(1)png"; // L
+                            imageName = "L.png"; // L
                         } else if( i == 7 && j== 9) {
                             imageName = "O.png"; // O
                         } else if( i == 8 && j== 5) {
-                            imageName = "L(1)png"; // L
+                            imageName = "L.png"; // L
                         } else if( i == 8 && j== 6) {
                             imageName = "2.png"; // U
                         } else if( i == 8 && j== 7) {
@@ -165,7 +168,15 @@ public class TelaFinal extends Tela{
         }
     }
 
+    @Override
+    protected void atualizaCamera() {
 
+        int linha = hero.getPosicao().getLinha();
+        int coluna = hero.getPosicao().getColuna();
+
+        cameraLinha = Math.max(0, Math.min(linha - Consts.RES / 2, Consts.MUNDO_MENU_ALTURA - Consts.RES));
+        cameraColuna = Math.max(0, Math.min(coluna - Consts.RES / 2, Consts.MUNDO_MENU_LARGURA - Consts.RES));
+    }
 
 
 

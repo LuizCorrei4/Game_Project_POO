@@ -35,7 +35,7 @@ public class Decoracao extends Personagem{
 
             Graphics g = imagemRedimensionada.createGraphics();
             g.drawImage(imagemOriginal, 0, 0, Consts.CELL_SIDE/2, Consts.CELL_SIDE/2, null);
-            g.dispose(); // libera recursos do gráfico
+            g.dispose();
 
             return new ImageIcon(imagemRedimensionada);
 

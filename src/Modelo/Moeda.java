@@ -37,7 +37,6 @@ public class Moeda extends Personagem{
             ImageIcon iconOriginal = new ImageIcon(caminhoImagem);
             Image imagemOriginal = iconOriginal.getImage();
 
-            // Cria uma imagem do tamanho da célula
             BufferedImage imagemFinal = new BufferedImage(
                     Consts.CELL_SIDE,
                     Consts.CELL_SIDE,
@@ -46,13 +45,11 @@ public class Moeda extends Personagem{
 
             Graphics g = imagemFinal.createGraphics();
 
-            // Calcula o deslocamento para centralizar a imagem menor
             int larguraMoeda = Consts.CELL_SIDE / 2;
             int alturaMoeda = Consts.CELL_SIDE / 2;
             int offsetX = (Consts.CELL_SIDE - larguraMoeda) / 2;
             int offsetY = (Consts.CELL_SIDE - alturaMoeda) / 2;
 
-            // Desenha a imagem redimensionada no centro
             g.drawImage(imagemOriginal, offsetX, offsetY, larguraMoeda, alturaMoeda, null);
             g.dispose();
 

@@ -1,5 +1,5 @@
 package Controler;
-import Auxiliar.Consts;
+import Auxiliar.*;
 import Modelo.*;
 import java.awt.*;
 import java.io.IOException;
@@ -93,7 +93,6 @@ public class Fase1 extends Tela {
         b3.setPosicao(2,12);
         this.addPersonagem(b3);
 
-        // Exemplo: salvar um inimigo
 
         this.arrasta();
 
@@ -105,7 +104,6 @@ public class Fase1 extends Tela {
         g2 = g.create(getInsets().left, getInsets().top,
                 getWidth() - getInsets().right, getHeight() - getInsets().top);
 
-        // Desenha fundo
         for (int i = 0; i < Consts.RES; i++) {
             for (int j = 0; j < Consts.RES; j++) {
                 int mapaLinha = cameraLinha + i;

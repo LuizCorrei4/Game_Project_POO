@@ -22,7 +22,7 @@ public class Fase3 extends Tela{
 
 
         String[] labirinto = {
-                // colunas de 0 a 29 (linha 0 e 14 são margens visuais, não terão barreiras)
+                // colunas de 0 a 29
                 "                              ",
                 " .....O........O.. .O ..C.. . ",
                 " OOOO. OOOOO.OOOOC. OOOOOOO . ",
@@ -54,9 +54,8 @@ public class Fase3 extends Tela{
                     this.addPersonagem(moeda);
                 }
                 if (labirinto[linha].charAt(coluna)=='K'){
-                    // Coloca a chave
                     chave = new Chave("KeyIcons3_translucent.png");
-                    chave.setPosicao(linha, coluna); // posição da seta de saída
+                    chave.setPosicao(linha, coluna);
                     this.addPersonagem(chave);
                 }
                 if (labirinto[linha].charAt(coluna)=='S'){
@@ -75,15 +74,15 @@ public class Fase3 extends Tela{
 
 
         ZigueZague zig = new ZigueZague("UfoBlue.png");
-        zig.setPosicao(1,16); //ta certo
+        zig.setPosicao(1,16);
         this.addPersonagem(zig);
 
         BichinhoVaiVemHorizontal b1 = new BichinhoVaiVemHorizontal("UfoBlue.png");
-        b1.setPosicao(8,18); //ta certo
+        b1.setPosicao(8,18);
         this.addPersonagem(b1);
 
         BichinhoVaiVemHorizontal b3 = new BichinhoVaiVemHorizontal("WhiteMoon.png");
-        b3.setPosicao(2,4); //ta certo
+        b3.setPosicao(2,4);
         this.addPersonagem(b3);
 
         NaveInimiga nave1 = new NaveInimiga("Spaceship4.png","projetil3.png",Consts.UP);
@@ -91,7 +90,7 @@ public class Fase3 extends Tela{
         this.addPersonagem(nave1);
 
         NaveInimiga nave2 = new NaveInimiga("Spaceship2_right.png","projetil1_right.png", Consts.RIGHT);
-        nave2.setPosicao(5,1); //ta certo
+        nave2.setPosicao(5,1);
         this.addPersonagem(nave2);
 
         BichinhoVaiVemHorizontal b4 = new BichinhoVaiVemHorizontal("PurplePlanet.png");
@@ -111,15 +110,16 @@ public class Fase3 extends Tela{
         Teletransporte t2 = new Teletransporte("BuracoNegro_right.png");
         t2.setPosicao(13, 2);
         this.addPersonagem(t2);
+
+        super.arrasta();
     }
 
     @Override
     public void paint(Graphics gOld) {
         Graphics g = this.getBufferStrategy().getDrawGraphics();
-        //Criamos um contexto gráfico
+
         g2 = g.create(getInsets().left, getInsets().top, getWidth() - getInsets().right, getHeight() - getInsets().top);
 
-        // Desenha cenário de fundo
 
         for (int i = 0; i < Consts.RES; i++) {
             for (int j = 0; j < Consts.RES; j++) {

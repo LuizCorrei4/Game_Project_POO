@@ -18,10 +18,10 @@ public class Fase4 extends Tela{
         hero.setPosicao(this.spawn.getLinha(), this.spawn.getColuna());
         this.addPersonagem(hero);
         this.atualizaCamera();
-        //this.desenha_barreira();
+
 
         String[] labirinto = {
-                // colunas de 0 a 29 (linha 0 e 14 são margens visuais, não terão barreiras)
+                // colunas de 0 a 29
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",
                 "@H                C     @   K@",
                 "@@@@@@@BC@        @@@@@@@  B @",
@@ -46,7 +46,6 @@ public class Fase4 extends Tela{
                     barreira.setPosicao(linha, coluna);
                     this.addPersonagem(barreira);}
                 if (labirinto[linha].charAt(coluna)=='K'){
-                    // Coloca a chave
                     chave = new Chave("KeyIcons4_translucent.png");
                     chave.setPosicao(linha, coluna); // posição da seta de saída
                     this.addPersonagem(chave);
@@ -98,7 +97,7 @@ public class Fase4 extends Tela{
         nave2.setPosicao(4,1);
         this.addPersonagem(nave2);
 
-
+        super.arrasta();
 
 
     }
@@ -106,10 +105,9 @@ public class Fase4 extends Tela{
     @Override
     public void paint(Graphics gOld) {
         Graphics g = this.getBufferStrategy().getDrawGraphics();
-        //Criamos um contexto gráfico
+
         g2 = g.create(getInsets().left, getInsets().top, getWidth() - getInsets().right, getHeight() - getInsets().top);
 
-        // Desenha cenário de fundo
 
         for (int i = 0; i < Consts.RES; i++) {
             for (int j = 0; j < Consts.RES; j++) {

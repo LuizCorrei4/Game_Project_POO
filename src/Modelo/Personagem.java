@@ -11,10 +11,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import javax.swing.ImageIcon;
 
-/**
- * Classe base para todos os personagens do jogo.
- * Implementa carregamento de sprite, posição e propriedades de colisão.
- */
+
 public abstract class Personagem implements Serializable {
 
     protected ImageIcon iImage;       // Sprite do personagem
@@ -70,9 +67,7 @@ public abstract class Personagem implements Serializable {
 
 
 
-
     public Posicao getPosicao() {
-        // Retorna objeto de posição (pode permitir alterações externas)
         return pPosicao;
     }
 
