@@ -34,8 +34,8 @@ public class Fase2 extends Tela{
                 "O.......O.......O...........O",
                 "OO.OOOOOOOOO.OOOOO.OOOOO.OOOO.",
                 "O.....O.........O.........W..",
-                "OOOO.OOOCOOOOOOOOOOO.OOOOOO.O.",
-                "O.......O....S....O..........",
+                "O  .OOOCOOOOOOOOOOO.OOOOOO.O.",
+                "O......O ....S....O..........",
                 "OOOOO.OOOOO.OOOOO.OOOOO.OOOOO.",
                 "O......CO......W....O.....K..",
                 "OOOOOOOOOOOOOOOOOOOOOOOOOOOOO."
@@ -100,6 +100,12 @@ public class Fase2 extends Tela{
         bichinho4.setPosicao(7, 18);
         this.addPersonagem(bichinho4);
 
+        ZigueZague zig = new ZigueZague("Sun.png");
+        zig.setPosicao(9,1); //ta certo
+        this.addPersonagem(zig);
+
+        super.arrasta();
+
     }
 
  @Override
@@ -142,6 +148,7 @@ public class Fase2 extends Tela{
                 this.chave.setImage("KeyIcons2.png");
             }
             if (hero.getPosicao().igual(chave.getPosicao()) && moedas.isEmpty()) {
+                Save.saveProgress(2);
                 carregarMenu();
             }
             this.atualizaCamera();

@@ -1,7 +1,5 @@
 package Modelo;
 
-import Controler.Menu;
-
 
 public class BuracoNegro extends Personagem{
     public BuracoNegro(String sNomeImagePNG) {

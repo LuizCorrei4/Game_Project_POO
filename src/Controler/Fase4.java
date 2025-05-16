@@ -143,6 +143,7 @@ public class Fase4 extends Tela{
                 this.chave.setImage("KeyIcons4.png");
             }
             if (  hero.getPosicao().igual(chave.getPosicao()) && moedas.isEmpty()) {
+                Save.saveProgress(4);
                 carregarMenu();
             }
             this.atualizaCamera();

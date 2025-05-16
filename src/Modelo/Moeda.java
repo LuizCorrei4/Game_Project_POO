@@ -1,7 +1,6 @@
 package Modelo;
 
 import Auxiliar.Consts;
-import Controler.Menu;
 
 import javax.swing.*;
 import java.awt.*;

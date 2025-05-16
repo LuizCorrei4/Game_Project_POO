@@ -5,9 +5,7 @@ package Modelo;
 
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
-import Controler.Tela;
-import Controler.Menu;
-import java.awt.Graphics;
+
 import java.io.Serializable;
 
 public class NaveInimiga extends Personagem implements Serializable{

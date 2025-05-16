@@ -16,7 +16,7 @@ public class Main {
                 public void run() {
                     Tela tTela = new Menu();
                     mostrarInstrucoes();
-// cria a janela do jogo
+                    // cria a janela do jogo
                     tTela.setVisible(true); // exibe a janela
                     /* Configura double buffering para renderização sem flicker (dois buffers)
                     *  O BufferStrategy do Tela é uma uma classe da API AQT/Swing do Java que facilita a
@@ -42,6 +42,7 @@ public class Main {
                 + "   - Colete todas as moedas para desbloquear a chave \n"
                 + "   - Evite os inimigos\n"
                 + "   - E vá até a chave!\n\n"
+                + "4. Aperte R para resetar o salvamento de progresso\n"
                 + "Boa sorte, astronauta!";
 
         JOptionPane.showMessageDialog(null,

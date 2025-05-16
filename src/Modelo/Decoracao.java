@@ -28,8 +28,8 @@ public class Decoracao extends Personagem{
             Image imagemOriginal = iconOriginal.getImage();
 
             BufferedImage imagemRedimensionada = new BufferedImage(
-                    Consts.CELL_SIDE/2,
-                    Consts.CELL_SIDE/2,
+                    Consts.CELL_SIDE,
+                    Consts.CELL_SIDE,
                     BufferedImage.TYPE_INT_ARGB
             );
 

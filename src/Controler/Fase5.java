@@ -30,7 +30,7 @@ public class Fase5 extends Tela{
                 "@C            @@    @ W    @@@",
                 "@@@  @@@@@@@@@@@    @   @@@@@@",
                 "@ W  @     @N@            N@@@", //       6,12^
-                "@    @     N@N   @@@@@@@@@@@@@", //  <-7,11     7,13 ->
+                "@    @     N@@   @@@@@@@@@@@@@", //  <-7,11
                 "@          @N@   @@@  S      @", //       8,12
                 "@  @@@@  @@@ @@@@@@@     @@@@@",
                 "@  @@ W        B         @@ K@",
@@ -89,8 +89,8 @@ public class Fase5 extends Tela{
         nv3.setPosicao(7, 11);
         this.addPersonagem(nv3);
 
-        NaveInimiga nv4 = new NaveInimiga("Spaceship2_right.png", "projetil2.png", Consts.RIGHT);
-        nv4.setPosicao(7, 13);
+        BichinhoVaiVemHorizontal nv4 = new BichinhoVaiVemHorizontal("tnt.png");
+        nv4.setPosicao(7, 14);
         this.addPersonagem(nv4);
 
         NaveInimiga nv5 = new NaveInimiga("Spaceship2_up.png", "projetil3.png", Consts.UP);
@@ -155,6 +155,7 @@ public class Fase5 extends Tela{
                 this.chave.setImage("KeyIcons2.png");
             }
             if (hero.getPosicao().igual(chave.getPosicao()) && moedas.isEmpty()) {
+                Save.saveProgress(5);
                 carregarMenu();
             }
             this.atualizaCamera();

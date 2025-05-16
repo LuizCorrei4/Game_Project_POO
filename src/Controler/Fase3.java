@@ -8,7 +8,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-
 public class Fase3 extends Tela{
 
     public Fase3() {
@@ -24,21 +23,21 @@ public class Fase3 extends Tela{
 
         String[] labirinto = {
                 // colunas de 0 a 29 (linha 0 e 14 são margens visuais, não terão barreiras)
-                "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-                "O.....O........O.. .O ..C.. .O",
-                "OOOOO. OOOOO.OOO0C. O0O0OOO .O",
-                "O..S......C...........W......O",
-                "O.OOOOO.OOOOOOOOO.OOOOO.OOOOOO",
-                "O.....O....O......O..... ..O.O",
-                "OOOOO.O.OOOOOOOOO.OOOOOOO.OOOO",
-                "O...S...O..C....O.....W....O.O",
-                "OO.OOOOOOOOO.OOOOO. OOOO.OOOOO",
-                "O.....O.......S... .........O.O",
-                "OOOO.OOO. OOOOOOOOOOO.OOOOOO.OO",
-                "O.....O.........O...   .....D.O",
-                "OOOOO.OOOOO.OOOOO. OOOOO.OOOOOO",
-                "O.C...O.......W...O..  ....KO.O",
-                "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO0"
+                "                              ",
+                " .....O........O.. .O ..C.. . ",
+                " OOOO. OOOOO.OOOOC. OOOOOOO . ",
+                " ..S......C...........W...... ",
+                " .OOOOO.OOOOOOOOO.OOOOO.OOOOO ",
+                " .....O....O......O..... ..O. ",
+                " OOOO.O.OOOOOOOOO.OOOOOOO.OOO ",
+                " ...S...O..C..T.O.....W....O. ", // 7,13
+                " O.OOOOOOOOOOOOOO . OOOO.OOOOO",
+                " .....O.......S... .........O. ",
+                " OOO.OOO. OOOOOOOOOOO.OOOOOO.O ",
+                " .....O.........O...   .....D. ",
+                " OOO .OOOOO.OOOOO. OOOOO.OOOOO ",
+                "   TC...O.......W...O..  ...KO.", //13,1
+                "                               "
         };
 
         for (int linha = 0; linha < labirinto.length; linha++) {
@@ -100,13 +99,18 @@ public class Fase3 extends Tela{
         this.addPersonagem(b4);
 
         BichinhoVaiVemHorizontal b5 = new BichinhoVaiVemHorizontal("Saturn2.png");
-        b5.setPosicao(3,27);
+        b5.setPosicao(2,27);
         this.addPersonagem(b5);
 
-        ZigueZague zig1 = new ZigueZague("Sun.png");
-        zig1.setPosicao(7,10); //ta certo
-        this.addPersonagem(zig1);
 
+
+        Teletransporte t1 = new Teletransporte("BuracoNegro.png");
+        t1.setPosicao(7, 13); //7,13
+        this.addPersonagem(t1);
+
+        Teletransporte t2 = new Teletransporte("BuracoNegro_right.png");
+        t2.setPosicao(13, 2);
+        this.addPersonagem(t2);
     }
 
     @Override
@@ -140,6 +144,28 @@ public class Fase3 extends Tela{
             this.cj.desenhaTudo(faseAtual);
             this.cj.processaTudo(faseAtual);
 
+            Teletransporte t1 = null;
+            Teletransporte t2 = null;
+
+
+            for(int i = 0; i<this.faseAtual.size(); i++) {
+                if(faseAtual.get(i) instanceof Teletransporte) {
+                    t1 = (Teletransporte) faseAtual.get(i);
+                    t2 = (Teletransporte) faseAtual.get(i+1);
+                    break;
+                }
+            }
+
+            assert t1 != null;
+            if (hero.getPosicao().igual(t1.getPosicao())) {
+                hero.setPosicao(t2.getPosicao().getLinha(), t2.getPosicao().getColuna()+1);//t1 para t2
+            }
+            if (hero.getPosicao().igual(t2.getPosicao())){
+                hero.setPosicao(t1.getPosicao().getLinha(), t1.getPosicao().getColuna()-1);
+            }
+
+
+
             for(Moeda c : moedas) {
                 if( c.isCatched() ){
                     moedas.remove(c);
@@ -149,6 +175,7 @@ public class Fase3 extends Tela{
                 this.chave.setImage("KeyIcons3.png");
             }
             if (hero.getPosicao().igual(chave.getPosicao()) && moedas.isEmpty()) {
+                Save.saveProgress(3);
                 carregarMenu();
             }
             this.atualizaCamera();

@@ -4,8 +4,6 @@
  */
 
 package Controler; // Pacote onde a classe ControleDeJogo está localizada
-import Controler.Menu;
-import Controler.Tela;
 import Modelo.Personagem; // Importa a classe Personagem do pacote Modelo
 import Modelo.Moeda; // Importa a classe Personagem do pacote Modelo
 import Modelo.Hero; // Importa a classe Hero (provavelmente uma subclasse de Personagem)
@@ -38,8 +36,7 @@ public class ControleDeJogo {
             if (hero.getPosicao().igual(pIesimoPersonagem.getPosicao())) {
                 if (pIesimoPersonagem.isbTransponivel()) { // Verifica se o personagem é transponível
                     if (pIesimoPersonagem.isbMortal()) {
-                        if(pIesimoPersonagem instanceof Moeda){
-                            Moeda moedaAux = (Moeda) pIesimoPersonagem;
+                        if(pIesimoPersonagem instanceof Moeda moedaAux){
                             moedaAux.pegouMoeda();
                         }
                         // Se o personagem for mortal, remove o personagem da fase

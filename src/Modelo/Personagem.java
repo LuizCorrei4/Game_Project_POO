@@ -6,7 +6,6 @@ import Auxiliar.Desenho;
 import Auxiliar.Posicao;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.Serializable;
@@ -43,6 +42,7 @@ public abstract class Personagem implements Serializable {
      * @param nomeImagem Nome do arquivo PNG da imagem
      * @return ImageIcon redimensionado
      */
+
     protected ImageIcon carregarImagemRedimensionada(String nomeImagem) {
         try {
             String caminhoImagem = new java.io.File(".").getCanonicalPath() + Consts.PATH + nomeImagem;
@@ -66,6 +66,10 @@ public abstract class Personagem implements Serializable {
             return null;
         }
     }
+
+
+
+
 
     public Posicao getPosicao() {
         // Retorna objeto de posição (pode permitir alterações externas)

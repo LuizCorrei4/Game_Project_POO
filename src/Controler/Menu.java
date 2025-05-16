@@ -6,12 +6,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Timer;  // Para a classe Timer
+import javax.swing.JOptionPane;  // Para a classe JOptionPane
 
 
 
 public class Menu extends Tela{
 
-
+    private ArrayList<Decoracao> checkmarks = new ArrayList<>();
+    protected boolean showGameCompleted = false;
     private ArrayList<BuracoNegro> buracosNegros = new ArrayList<>();
 
 
@@ -75,6 +78,27 @@ public class Menu extends Tela{
         fase5.setPosicao(11, 10);
         this.addPersonagem(fase5);
         buracosNegros.add(fase5);
+
+        for (int i = 0; i < 5; i++) {
+            if (Save.isFaseCompleted(i + 1)) {
+                Decoracao check = new Decoracao("completedMap.png"); // Você precisa ter esta imagem
+                check.setPosicao(3 + i*2, 11); // Posição ao lado do buraco negro
+                checkmarks.add(check);
+                this.addPersonagem(check);
+
+            }
+        }
+
+        // Verifica se todas as fases foram completadas
+        showGameCompleted = Save.allFasesCompleted();
+        if (Save.allFasesCompleted() && showGameCompleted) {
+            // Mostra a mensagem em uma caixa de diálogo
+            JOptionPane.showMessageDialog(this,
+                    "Parabéns! Você completou já todas as fases do jogo!",
+                    "Jogo Completo",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+        }
 
 // Estrelas
         Decoracao star1 = new Decoracao("YellowStars2.png");
@@ -245,6 +269,7 @@ public class Menu extends Tela{
                 }
             }
         }
+
 
         g.dispose();
         g2.dispose();

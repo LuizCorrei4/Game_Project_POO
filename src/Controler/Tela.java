@@ -5,15 +5,15 @@ A Tela gerencia a interface gráfica, entidades e eventos.
  */
 
 package Controler;
-
+import Auxiliar.PersonagemSaver;
 import Modelo.*;
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
 import Auxiliar.Posicao;
-
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Toolkit;
+import java.lang.Object;
+import javax.swing.JOptionPane;
+import java.awt.*;
+import java.io.File;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
@@ -22,6 +22,18 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetAdapter;
+import java.awt.dnd.DropTargetDropEvent;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public abstract class Tela extends javax.swing.JFrame implements KeyListener {
 
@@ -62,10 +74,89 @@ public abstract class Tela extends javax.swing.JFrame implements KeyListener {
         // Atualiza a posição da câmera para que o herói fique centralizado (ou dentro da área visível)
         this.atualizaCamera();
 
-        // Criação das barreiras (asteroides) que formam as bordas do tabuleiro
-        // Barreira superior
+
+        NaveInimiga inimigo = new NaveInimiga("Spaceship4.png", "projetil3.png", Consts.UP);
+        PersonagemSaver.salvarPersonagem(inimigo, "arquivos_zip_dos_objetos/nave_inimiga.zip");
+
+        BichinhoVaiVemHorizontal bichinhoHo = new BichinhoVaiVemHorizontal("Sun.png");
+        PersonagemSaver.salvarPersonagem(bichinhoHo, "arquivos_zip_dos_objetos/sol_bichinhohorizontal.zip");
+
+        BichinhoVaiVemVertical bichinhoVe = new BichinhoVaiVemVertical("RocketGrey.png");
+        PersonagemSaver.salvarPersonagem(bichinhoVe, "arquivos_zip_dos_objetos/foguete_bichinhovertical.zip");
+
+        ZigueZague zig = new ZigueZague("UfoBlue.png");
+        PersonagemSaver.salvarPersonagem(zig, "arquivos_zip_dos_objetos/alien_zigzag.zip");
+
+        ZigueZague zig1 = new ZigueZague("UfoGrey.png");
+        PersonagemSaver.salvarPersonagem(zig1, "arquivos_zip_dos_objetos/zigzag.zip");
 
     }
+
+
+    protected void arrasta() {
+        new DropTarget(this, new DropTargetAdapter() {
+            @Override
+            public void drop(DropTargetDropEvent dtde) {
+                try {
+                    dtde.acceptDrop(DnDConstants.ACTION_COPY);
+
+                    // Verificação de tipo segura
+                    if (dtde.getTransferable().isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+                        @SuppressWarnings("unchecked")
+                        List<File> droppedFiles = (List<File>) dtde.getTransferable()
+                                .getTransferData(DataFlavor.javaFileListFlavor);
+
+                        for (File file : droppedFiles) {
+                            if (file.getName().toLowerCase().endsWith(".zip")) {
+                                adicionarPersonagemDeArquivo(file);
+                            }
+                        }
+                        dtde.dropComplete(true);
+                        repaint();
+                    }
+                } catch (UnsupportedFlavorException | IOException ex) {
+                    dtde.dropComplete(false);
+                    JOptionPane.showMessageDialog(Tela.this,
+                            "Erro ao processar arquivo: " + ex.getMessage(),
+                            "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+    }
+
+
+
+    protected void adicionarPersonagemDeArquivo(File arquivoZip) {
+        try (ZipInputStream zis = new ZipInputStream(new FileInputStream(arquivoZip))) {
+            ZipEntry entry;
+            while ((entry = zis.getNextEntry()) != null) {
+                if (!entry.isDirectory() && entry.getName().endsWith(".ser")) {
+                    try (ObjectInputStream ois = new ObjectInputStream(zis)) {
+                        Personagem personagem = (Personagem) ois.readObject();
+
+                        // Converte coordenadas de tela para coordenadas do jogo
+                        Point dropPoint = getMousePosition();
+                        if (dropPoint != null) {
+                            int coluna = (dropPoint.x - getInsets().left) / Consts.CELL_SIDE + cameraColuna;
+                            int linha = (dropPoint.y - getInsets().top) / Consts.CELL_SIDE + cameraLinha;
+
+                            personagem.setPosicao(linha, coluna);
+                            addPersonagem(personagem);
+
+                            JOptionPane.showMessageDialog(this,
+                                    "Personagem adicionado com sucesso!",
+                                    "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao ler arquivo: " + ex.getMessage(),
+                    "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
 
     protected void carregarMenu() {
         // Fecha o menu atual
@@ -247,6 +338,33 @@ public abstract class Tela extends javax.swing.JFrame implements KeyListener {
         else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             carregarMenu();
             return;
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_R) {
+            // Apaga o arquivo de salvamento
+            File saveFile = new File(Save.SAVE_FILE);
+            if (saveFile.exists()) {
+                if (saveFile.delete()) {
+                    System.out.println("Arquivo de salvamento apagado com sucesso!");
+
+                    JOptionPane.showMessageDialog(this,
+                            "Progresso do jogo resetado com sucesso!",
+                            "Reset de Progresso",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    carregarMenu();
+                } else {
+                    System.err.println("Falha ao apagar arquivo de salvamento!");
+                    JOptionPane.showMessageDialog(this,
+                            "Erro ao resetar progresso!",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                System.out.println("Nenhum arquivo de salvamento encontrado!");
+                JOptionPane.showMessageDialog(this,
+                        "Nenhum progresso para resetar!",
+                        "Informação",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
         }
         // Verifica se a tecla pressionada foi 'UP' (seta para cima)
         else if (e.getKeyCode() == KeyEvent.VK_UP) {

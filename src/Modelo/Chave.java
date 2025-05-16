@@ -1,9 +1,5 @@
 package Modelo;
 
-import Controler.Menu;
-
-import javax.swing.*;
-
 
 public class Chave extends Personagem{
     protected boolean isTranslucent;
@@ -19,13 +15,13 @@ public class Chave extends Personagem{
         super.autoDesenho();
     }
 
-    public boolean isTranslucent() {
+    /*public boolean isTranslucent() {
         return isTranslucent;
     }
 
     public void translucentOff() {
         this.isTranslucent = false;
-    }
+    }*/
 
 
     public void setImage(String image){

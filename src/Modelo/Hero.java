@@ -2,24 +2,7 @@ package Modelo;
 
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
-import Controler.ControleDeJogo;
-import Controler.Tela;
-import Controler.Menu;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.io.IOException;
-import java.io.Serializable;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 
-import Auxiliar.Consts;
-import Auxiliar.Desenho;
-import Auxiliar.Posicao;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.swing.ImageIcon;
@@ -81,19 +64,6 @@ public class Hero extends Personagem implements Serializable{
         return false;
     }
 
-    private int idleState = 0;
-    public void trocaIdleFrame() {
-        // supondo duas imagens “player1_idle1.png” e “player1_idle2.png”
-        idleState = 1 - idleState;
-        String img = (idleState == 0
-                ? "player1_right1.png"
-                : "player1_right2.png");
-        try {
-            iImage = new ImageIcon(
-                    new java.io.File(".").getCanonicalPath()
-                            + Consts.PATH + img);
-        } catch (IOException ex) { /*…*/ }
-    }
 
     public void troca_imagem(String caminho) throws IOException {
         this.iImage = new ImageIcon(new java.io.File(".").getCanonicalPath() + Consts.PATH + caminho);

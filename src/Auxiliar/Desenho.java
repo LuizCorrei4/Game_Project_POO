@@ -6,7 +6,7 @@ import java.awt.Graphics; // Importa a classe Graphics para manipulação de gr�
 import java.io.Serializable; // Importa Serializable para que objetos desta classe possam ser serializados
 import javax.swing.ImageIcon; // Importa ImageIcon para manipulação de imagens no Swing
 import Controler.Tela; // Importa a classe Tela que representa a tela do jogo
-import Controler.Menu;
+
 public class Desenho implements Serializable {
 
     static Tela jCenario; // Variável estática que armazenará a referência para a tela do jogo

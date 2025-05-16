@@ -93,10 +93,10 @@ public class Fase1 extends Tela {
         b3.setPosicao(2,12);
         this.addPersonagem(b3);
 
+        // Exemplo: salvar um inimigo
 
+        this.arrasta();
 
-
-        
     }
 
     @Override
@@ -138,6 +138,7 @@ public class Fase1 extends Tela {
                 this.chave.setImage("KeyIcons1.png");
             }
             if (  hero.getPosicao().igual(chave.getPosicao()) && moedas.isEmpty()) {
+                Save.saveProgress(1);
                 carregarMenu();
             }
             this.atualizaCamera();
