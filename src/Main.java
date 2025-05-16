@@ -1,6 +1,7 @@
 // File: Main.java
 import Controler.Menu;
 import Controler.Tela;
+import javax.swing.JOptionPane;
 
 public class Main {
     // Na Main, iniciamos o loop do jogo
@@ -13,7 +14,9 @@ public class Main {
         java.awt.EventQueue.invokeLater(new Runnable()
             {
                 public void run() {
-                    Tela tTela = new Menu(); // cria a janela do jogo
+                    Tela tTela = new Menu();
+                    mostrarInstrucoes();
+// cria a janela do jogo
                     tTela.setVisible(true); // exibe a janela
                     /* Configura double buffering para renderização sem flicker (dois buffers)
                     *  O BufferStrategy do Tela é uma uma classe da API AQT/Swing do Java que facilita a
@@ -23,10 +26,28 @@ public class Main {
                     // Buffer A: mostrado na tela;
                     // Buffer B: você desenha "fora de cena"
                     // Inicia o loop principal de atualização e desenho (LOOP DO JOGO)
+                    //Menu menuAux = (Menu)tTela;
                     tTela.go();
+                    //menuAux.setInstrucao(true);
                 }
             }
         );
     }
-}
+    private static void mostrarInstrucoes() {
+        String mensagem = "Bem-vindo ao RunScape!\n\n"
+                + "INSTRUÇÕES:\n"
+                + "1. Use as setas para mover o Hero\n"
+                + "2. Entre nos buracos negros numerados para acessar as fases\n"
+                + "3. Cada fase tem os objetivos:\n"
+                + "   - Colete todas as moedas para desbloquear a chave \n"
+                + "   - Evite os inimigos\n"
+                + "   - E vá até a chave!\n\n"
+                + "Boa sorte, astronauta!";
 
+        JOptionPane.showMessageDialog(null,
+                mensagem,
+                "Instruções do Jogo",
+                JOptionPane.INFORMATION_MESSAGE);
+
+    }
+}

@@ -244,6 +244,10 @@ public abstract class Tela extends javax.swing.JFrame implements KeyListener {
             // Limpa a lista de personagens ou objetos da fase atual
             this.faseAtual.clear();
         }
+        else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            carregarMenu();
+            return;
+        }
         // Verifica se a tecla pressionada foi 'UP' (seta para cima)
         else if (e.getKeyCode() == KeyEvent.VK_UP) {
             // Move o personagem (herói) para cima

@@ -18,7 +18,6 @@ public class Fase2 extends Tela{
         this.addPersonagem(hero);
         this.atualizaCamera();
         this.desenha_barreira();
-        int contador_moeda = 0;
         this.moedas = new ArrayList<Moeda>(3);
 
 
@@ -26,22 +25,23 @@ public class Fase2 extends Tela{
         String[] labirinto = {
                 // colunas de 0 a 29 (linha 0 e 14 são margens visuais, não terão barreiras)
                 "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",  // Linha 0 - borda
-                "O....CCCO.....♆.....☄........",
-                "OOOOO.OOOOOO.OOOOOOO.OOOOOOO..",
-                "O.....♆..........☆.........☄.",
+                "O.......O..............S.....",
+                "OOOOO.OOOOOO.OOOOOOO.OOOOOOOC.",
+                "O............W...............",
                 "O.OOOOO.OOOOOOOOO.OOOOO.OOOOO.",
-                "O.☄...........O.........☆....",
+                "O....S........O..............",
                 "OOOOOOO.O.OOOOOOOOO.OOOOOOO.O.",
-                "O.......O.♆.....O.....☄.....O",
+                "O.......O.......O...........O",
                 "OO.OOOOOOOOO.OOOOO.OOOOO.OOOO.",
-                "O.....O...☆.....O.....♆......",
-                "OOOO.OOO.OOOOOOOOOOO.OOOOOO.O.",
-                "O.......O...☄.....O........☆.",
+                "O.....O.........O.........W..",
+                "OOOO.OOOCOOOOOOOOOOO.OOOOOO.O.",
+                "O.......O....S....O..........",
                 "OOOOO.OOOOO.OOOOO.OOOOO.OOOOO.",
-                "O.♆.....O.......☄...O.....K..",
+                "O......CO......W....O.....K..",
                 "OOOOOOOOOOOOOOOOOOOOOOOOOOOOO."
         };
 
+        // 10, 8  13,7  2,28
         for (int linha = 0; linha < labirinto.length; linha++) {
             for (int coluna = 0; coluna < labirinto[linha].length(); coluna++) {
                 if (labirinto[linha].charAt(coluna) == 'O') {
@@ -61,6 +61,16 @@ public class Fase2 extends Tela{
                     chave.setPosicao(linha, coluna); // posição da seta de saída
                     this.addPersonagem(chave);
                 }
+                if (labirinto[linha].charAt(coluna)=='S'){
+                    Decoracao star1 = new Decoracao("YellowStars2.png");
+                    star1.setPosicao(linha, coluna);
+                    this.addPersonagem(star1);
+                }
+                if (labirinto[linha].charAt(coluna)=='W'){
+                    Decoracao star2 = new Decoracao("WhiteStars2.png");
+                    star2.setPosicao(linha, coluna);
+                    this.addPersonagem(star2);
+                }
             }
         }
 
@@ -78,11 +88,11 @@ public class Fase2 extends Tela{
         bichinho.setPosicao(1, 11);
         this.addPersonagem(bichinho);
 
-        BichinhoVaiVemHorizontal bichinho2 = new BichinhoVaiVemHorizontal("UfoGrey.png");
+        BichinhoVaiVemHorizontal bichinho2 = new BichinhoVaiVemHorizontal("RedMoon.png");
         bichinho2.setPosicao(7, 12);
         this.addPersonagem(bichinho2);
 
-        BichinhoVaiVemHorizontal bichinho3 = new BichinhoVaiVemHorizontal("UfoGrey1.png");
+        BichinhoVaiVemHorizontal bichinho3 = new BichinhoVaiVemHorizontal("Saturn2.png");
         bichinho3.setPosicao(9, 12);
         this.addPersonagem(bichinho3);
 

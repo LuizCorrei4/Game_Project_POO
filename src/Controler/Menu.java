@@ -8,10 +8,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
+
 public class Menu extends Tela{
-    int fase_cont = 0;
+
+
     private ArrayList<BuracoNegro> buracosNegros = new ArrayList<>();
+
+
     public Menu() {
+
 
         faseAtual = new ArrayList<Personagem>();
         hero.setPosicao(1, 7);
@@ -149,7 +154,6 @@ public class Menu extends Tela{
 
 
     }
-
 
 
     private void carregarFase(int numeroFase) {

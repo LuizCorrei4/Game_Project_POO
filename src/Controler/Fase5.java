@@ -13,49 +13,107 @@ import java.util.logging.Logger;
 public class Fase5 extends Tela{
 
     public Fase5() {
-        // Novo layout do labirinto
+
+
+        faseAtual = new ArrayList<Personagem>();
+        hero.setPosicao(this.spawn.getLinha(), this.spawn.getColuna());
+        this.addPersonagem(hero);
+        this.atualizaCamera();
+        this.moedas = new ArrayList<Moeda>(4);
+
+
         String[] labirinto = {
-                "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",  // Linha 0 - borda
-                "O....☄........O.......♆......O", // Linha 1
-                "O.OOOOO.OOOOOOO.O.OOOOOOOOOO.O",  // Linha 2
-                "O.O.....☆.........O..........O",  // Linha 3
-                "O.OOOO.OOOOO.O.OOOOO.O.OOOOO.O",  // Linha 4
-                "O.....O...O.....♆....O....☄O.O", // Linha 5
-                "O.OOOOO.O.O.OOOOOOOOOO.OOOOO.O",  // Linha 6
-                "O.O.......O....☆...O.........O",  // Linha 7
-                "O.OOOO.OOOOOO.O.OOOO.OOOO.OO.O",  // Linha 8
-                "O.....O..☄....O....O.....O...O",  // Linha 9
-                "OOOOO.O.OOOOOOOOOO.O.OOOOO.O.O",  // Linha 10
-                "O...O.O.......O....O.....♆...O",  // Linha 11
-                "O.O.O.O.OOOOO.O.OOOOO.OOOOOO.O",  // Linha 12
-                "O.O...O....☄..O..............O",  // Linha 13
-                "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"   // Linha 14
+                "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",
+                "@      S           @   @@@@@@@",
+                "@  @    @@@@B @@   @C        @",
+                "@  @@@@@@     @@   @@@@@    N@", // 3,28 <-
+                "@C            @@    @ W    @@@",
+                "@@@  @@@@@@@@@@@    @   @@@@@@",
+                "@ W  @     @N@            N@@@", //       6,12^
+                "@    @     N@N   @@@@@@@@@@@@@", //  <-7,11     7,13 ->
+                "@          @N@   @@@  S      @", //       8,12
+                "@  @@@@  @@@ @@@@@@@     @@@@@",
+                "@  @@ W        B         @@ K@",
+                "@  @@  @@@@@   @    @@@@@@   @",
+                "@N  @@@@  @@   @@@@@@        @", // 12,1 ->
+                "@C        @@C          S     @",
+                "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
         };
 
-        // Adiciona barreiras baseadas no novo labirinto
+
+
+
         for (int linha = 0; linha < labirinto.length; linha++) {
             for (int coluna = 0; coluna < labirinto[linha].length(); coluna++) {
-                if (labirinto[linha].charAt(coluna) == 'O') {
+                if (labirinto[linha].charAt(coluna) == '@') {
                     Barreira barreira = new Barreira("asteroid.png");
                     barreira.setPosicao(linha, coluna);
-                    this.addPersonagem(barreira);
+                    this.addPersonagem(barreira);}
+                if (labirinto[linha].charAt(coluna)=='K'){
+                    // Coloca a chave
+                    chave = new Chave("KeyIcons1_translucent.png");
+                    chave.setPosicao(linha, coluna); // posição da seta de saída
+                    this.addPersonagem(chave);
                 }
+                if (labirinto[linha].charAt(coluna)=='C'){
+                    Moeda moeda = new Moeda("coin.png");
+                    moeda.setPosicao(linha, coluna);
+                    this.moedas.add(moeda);
+                    this.addPersonagem(moeda);
+                }
+                if (labirinto[linha].charAt(coluna)=='S'){
+                    Decoracao star1 = new Decoracao("YellowStars2.png");
+                    star1.setPosicao(linha, coluna);
+                    this.addPersonagem(star1);
+                }
+                if (labirinto[linha].charAt(coluna)=='W'){
+                    Decoracao star2 = new Decoracao("WhiteStars2.png");
+                    star2.setPosicao(linha, coluna);
+                    this.addPersonagem(star2);
+                }
+
+
             }
         }
 
-        // Posiciona a chave em local diferente
-        chave = new Chave("KeyIcons2.png");
-        chave.setPosicao(5, 15);
-        this.addPersonagem(chave);
-
         // Inimigos com padrões de movimento distintos
-        NaveInimiga nvVertical = new NaveInimiga("Spaceship2_down.png", "projetil1_down.png", Consts.DOWN);
-        nvVertical.setPosicao(2, 20);
+        NaveInimiga nvVertical = new NaveInimiga("Spaceship2_right.png", "projetil1_right.png", Consts.RIGHT);
+        nvVertical.setPosicao(12, 1);
         this.addPersonagem(nvVertical);
 
         NaveInimiga nvHorizontal = new NaveInimiga("Spaceship2_left.png", "projetil1_left.png", Consts.LEFT);
-        nvHorizontal.setPosicao(10, 5);
+        nvHorizontal.setPosicao(3, 28);
         this.addPersonagem(nvHorizontal);
+
+        NaveInimiga nv3 = new NaveInimiga("Spaceship2_left.png", "projetil2.png", Consts.LEFT);
+        nv3.setPosicao(7, 11);
+        this.addPersonagem(nv3);
+
+        NaveInimiga nv4 = new NaveInimiga("Spaceship2_right.png", "projetil2.png", Consts.RIGHT);
+        nv4.setPosicao(7, 13);
+        this.addPersonagem(nv4);
+
+        NaveInimiga nv5 = new NaveInimiga("Spaceship2_up.png", "projetil3.png", Consts.UP);
+        nv5.setPosicao(6, 12);
+        this.addPersonagem(nv5);
+
+        NaveInimiga nv6 = new NaveInimiga("Spaceship2_down.png", "projetil3.png", Consts.DOWN);
+        nv6.setPosicao(8, 12);
+        this.addPersonagem(nv6);
+
+        BichinhoVaiVemHorizontal b1 = new BichinhoVaiVemHorizontal("UfoBlue.png");
+        b1.setPosicao(9,7);
+        this.addPersonagem(b1);
+
+        BichinhoVaiVemVertical b2 = new BichinhoVaiVemVertical("UfoGrey1.png");
+        b2.setPosicao(11,12);
+        this.addPersonagem(b2);
+
+        BichinhoVaiVemHorizontal b3 = new BichinhoVaiVemHorizontal("RedPlanet.png");
+        b3.setPosicao(2,12);
+        this.addPersonagem(b3);
+
+
 }
 
     @Override
@@ -88,10 +146,17 @@ public class Fase5 extends Tela{
         if (!this.faseAtual.isEmpty()) {
             this.cj.desenhaTudo(faseAtual);
             this.cj.processaTudo(faseAtual);
-            if (  hero.getPosicao().igual(chave.getPosicao())  ) {
+            for(Moeda c : moedas) {
+                if( c.isCatched() ){
+                    moedas.remove(c);
+                }
+            }
+            if (moedas.isEmpty()){
+                this.chave.setImage("KeyIcons2.png");
+            }
+            if (hero.getPosicao().igual(chave.getPosicao()) && moedas.isEmpty()) {
                 carregarMenu();
             }
-
             this.atualizaCamera();
         }
 

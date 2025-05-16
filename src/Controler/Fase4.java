@@ -12,7 +12,7 @@ public class Fase4 extends Tela{
 
     public Fase4() {
         faseAtual = new ArrayList<Personagem>();
-        int contador_moeda = 0;
+
         this.moedas = new ArrayList<Moeda>(4);
 
         hero.setPosicao(this.spawn.getLinha(), this.spawn.getColuna());
@@ -25,17 +25,17 @@ public class Fase4 extends Tela{
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",
                 "@H                C     @   K@",
                 "@@@@@@@BC@        @@@@@@@  B @",
-                "@        @@@@@@@@@@     @@@  @",
-                "@N                      @    @",
+                "@    S   @@@@@@@@@@     @@@  @",
+                "@N                    W @    @",
                 "@@@@  @@@@@@@@@@@@@@@@@@@    @",
-                "@     @@                     @",
+                "@     @@            S        @",
                 "@     @@B @@@@@@@@@@@@@@@@@@@@",
-                "@     @@      C              @",
+                "@  W  @@      C              @",
                 "@  @@@@@@@@@@@@@@@@@@@@@@@@  @",
-                "@  @              @    B @@  @",
+                "@  @     S        @    B @@  @",
                 "@  @              @N         @",
                 "@  @@B @@@@@@@@@@@@@@@  @@@@@@",
-                "@C                           @",
+                "@C            W              @",
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
         };
 
@@ -56,6 +56,15 @@ public class Fase4 extends Tela{
                     moeda.setPosicao(linha, coluna);
                     this.moedas.add(moeda);
                     this.addPersonagem(moeda);
+                }if (labirinto[linha].charAt(coluna)=='S'){
+                    Decoracao star1 = new Decoracao("YellowStars2.png");
+                    star1.setPosicao(linha, coluna);
+                    this.addPersonagem(star1);
+                }
+                if (labirinto[linha].charAt(coluna)=='W'){
+                    Decoracao star2 = new Decoracao("WhiteStars2.png");
+                    star2.setPosicao(linha, coluna);
+                    this.addPersonagem(star2);
                 }
 
             }
@@ -69,7 +78,7 @@ public class Fase4 extends Tela{
         b2.setPosicao(11,24);
         this.addPersonagem(b2);
 
-        BichinhoVaiVemHorizontal b3 = new BichinhoVaiVemHorizontal("RedPlanet.png");
+        BichinhoVaiVemHorizontal b3 = new BichinhoVaiVemHorizontal("Satellite.png");
         b3.setPosicao(7,8);
         this.addPersonagem(b3);
 

@@ -12,7 +12,7 @@ public class Fase1 extends Tela {
 
     public Fase1() {
         faseAtual = new ArrayList<Personagem>();
-        int contador_moeda = 0;
+
         this.moedas = new ArrayList<Moeda>(4);
 
         // Posição inicial do herói
@@ -23,19 +23,19 @@ public class Fase1 extends Tela {
 
         String[] labirinto = {
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",
-                "@                  @   @@@@@@@",
+                "@      S           @   @@@@@@@",
                 "@  @    @@@@B @@   @C        @",
                 "@  @@@@@@     @@   @@@@@    @@",
-                "@C            @@    @      @@@",
+                "@C            @@    @ W    @@@",
                 "@@@  @@@@@@@@@@@    @    @@@@@@",
-                "@    @     @              N@@@",
+                "@ W  @     @              N@@@",
                 "@    @     @    @@@@@@@@@@@@@@",
-                "@  N     B @    @@@@         @",
+                "@  N     B @    @@@@  S      @",
                 "@  @@@@  @@@@@@@@@@@     @@@@@",
-                "@  @@          B        @@ K @",
+                "@  @@ W        B        @@ K @",
                 "@  @@  @@@@@   @    @@@@@@   @",
                 "@  @@@@@  @@   @@@@@@        @",
-                "@C        @@C                @",
+                "@C        @@C          S     @",
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
         };
 
@@ -58,6 +58,16 @@ public class Fase1 extends Tela {
                     this.moedas.add(moeda);
                     this.addPersonagem(moeda);
                 }
+                if (labirinto[linha].charAt(coluna)=='S'){
+                    Decoracao star1 = new Decoracao("YellowStars2.png");
+                    star1.setPosicao(linha, coluna);
+                    this.addPersonagem(star1);
+                }
+                if (labirinto[linha].charAt(coluna)=='W'){
+                Decoracao star2 = new Decoracao("WhiteStars2.png");
+                star2.setPosicao(linha, coluna);
+                this.addPersonagem(star2);
+                }
 
 
             }
@@ -72,14 +82,14 @@ public class Fase1 extends Tela {
         this.addPersonagem(nave2);
 
         BichinhoVaiVemHorizontal b1 = new BichinhoVaiVemHorizontal("UfoBlue.png");
-        b1.setPosicao(8,7);
+        b1.setPosicao(9,7);
         this.addPersonagem(b1);
 
         BichinhoVaiVemVertical b2 = new BichinhoVaiVemVertical("UfoGrey1.png");
         b2.setPosicao(11,12);
         this.addPersonagem(b2);
 
-        BichinhoVaiVemHorizontal b3 = new BichinhoVaiVemHorizontal("RedPlanet.png");
+        BichinhoVaiVemHorizontal b3 = new BichinhoVaiVemHorizontal("RedMoon.png");
         b3.setPosicao(2,12);
         this.addPersonagem(b3);
 
