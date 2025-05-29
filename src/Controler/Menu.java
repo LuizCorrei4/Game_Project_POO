@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-// Para a classe Timer
-import javax.swing.JOptionPane;  // Para a classe JOptionPane
+
+import javax.swing.JOptionPane;
 
 
 
@@ -265,7 +265,8 @@ public class Menu extends Tela implements KeyListener {
                 if (hero.getPosicao().igual(buraco.getPosicao())) {
                     int faseNumero = buracosNegros.indexOf(buraco) + 1;
                     carregarFase(faseNumero);
-                    break;
+                    return;
+                    //break;
                 }
             }
         }

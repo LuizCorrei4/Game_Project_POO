@@ -1,12 +1,12 @@
 // File: Main.java
 import Controler.Menu;
 import Controler.Tela;
-import Controler.Fase1; // Example, might need others or use reflection fully
+import Controler.Fase1;
 import Controler.Fase2;
 import Controler.Fase3;
 import Controler.Fase4;
 import Controler.Fase5;
-import Auxiliar.GameState; // Import GameState
+import Auxiliar.GameState;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -33,28 +33,28 @@ public class Main {
                         } catch (IOException | ClassNotFoundException ex) {
                             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Erro ao carregar o jogo salvo.", ex);
                             JOptionPane.showMessageDialog(null, "Erro ao carregar o jogo salvo. Iniciando novo jogo.", "Erro de Carregamento", JOptionPane.ERROR_MESSAGE);
-                            // Optionally delete the corrupt save file: saveFile.delete();
+
                         }
                     }
                 }
 
                 if (loadedState != null) {
                     try {
-                        // Use reflection to create an instance of the saved phase class
+
                         Class<?> phaseClass = Class.forName(loadedState.currentPhaseClassName);
                         tTela = (Tela) phaseClass.getDeclaredConstructor().newInstance();
-                        // The constructor of FaseX will run. Then we restore.
+
                         tTela.restoreGameState(loadedState);
-                        // No need to call mostrarInstrucoes() if loading a game
+
                     } catch (Exception ex) {
                         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Erro fatal ao restaurar a fase.", ex);
                         JOptionPane.showMessageDialog(null, "Erro fatal ao restaurar a fase. Iniciando novo jogo.", "Erro de Restauração", JOptionPane.ERROR_MESSAGE);
-                        tTela = new Menu(); // Fallback to menu
-                        mostrarInstrucoes(); // Show instructions for new game
+                        tTela = new Menu();
+                        mostrarInstrucoes();
                     }
                 } else {
-                    tTela = new Menu(); // Default to Menu if no save or user chose no
-                    mostrarInstrucoes(); // Show instructions for new game
+                    tTela = new Menu();
+                    mostrarInstrucoes();
                 }
 
                 tTela.setVisible(true);

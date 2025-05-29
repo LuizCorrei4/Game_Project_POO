@@ -25,36 +25,65 @@ public class ControleDeJogo {
 
     // Metodo para processar as interações de todos os personagens na fase
     public void processaTudo(ArrayList<Personagem> umaFase) {
-        Hero hero = (Hero) umaFase.get(0); // Assume que o primeiro personagem da lista é o herói (cast para Hero)
-        Personagem pIesimoPersonagem;
+        if (umaFase.isEmpty()) return;
 
-        // Laço para verificar as colisões entre o herói e os outros personagens
-        for (int i = 1; i < umaFase.size(); i++) {
-            pIesimoPersonagem = umaFase.get(i); // Obtém o personagem da posição i
-
-            //  Verifica se o héroi está na mesma posição do i-ésimo personagem
-            if (hero.getPosicao().igual(pIesimoPersonagem.getPosicao())) {
-                if (pIesimoPersonagem.isbTransponivel()) { // Verifica se o personagem é transponível
-                    if (pIesimoPersonagem.isbMortal()) {
-                        if(pIesimoPersonagem instanceof Moeda moedaAux){
-                            moedaAux.pegouMoeda();
-                        }
-                        // Se o personagem for mortal, remove o personagem da fase
-                        umaFase.remove(pIesimoPersonagem);
-
-                    }
-                }
-            }
-            // Verifica se o personagem vai morrer
-            if (hero.getPosicao().igual(pIesimoPersonagem.getPosicao()) && pIesimoPersonagem.isbAssasino()) {
-                hero.setPosicao(spawn.getLinha(), spawn.getColuna());
+        Hero hero = null;
+        // It's safer to find the hero instance if the list order isn't strictly guaranteed
+        // or if the hero could potentially be removed and re-added.
+        for (Personagem p : umaFase) {
+            if (p instanceof Hero) {
+                hero = (Hero) p;
                 break;
             }
         }
+        if (hero == null) return; // No hero to process against
 
-        // A segunda parte do loop parece estar sem funcionalidade, apenas percorre a lista sem fazer nada
-        // Esse trecho pode ser removido ou completado, caso tenha uma ação a ser realizada aqui.
+        java.util.Iterator<Personagem> iterator = umaFase.iterator();
+        while (iterator.hasNext()) {
+            Personagem pIesimoPersonagem = iterator.next();
 
+            if (pIesimoPersonagem == hero) { // Skip hero interacting with self
+                continue;
+            }
+
+            // Check for collision with hero
+            if (hero.getPosicao().igual(pIesimoPersonagem.getPosicao())) {
+                if (pIesimoPersonagem.isbTransponivel()) {
+                    if (pIesimoPersonagem.isbMortal()) { // E.g., Moeda
+                        if (pIesimoPersonagem instanceof Moeda) {
+                            ((Moeda) pIesimoPersonagem).pegouMoeda();
+                            // The coin is removed from 'umaFase' (which is 'faseAtual') here.
+                            // The removal from the separate 'moedas' list is handled in FaseX.paint().
+                        }
+                        iterator.remove(); // Safe removal from 'umaFase'
+                    }
+                    // If it's transponivel and NOT mortal (e.g. a power-up to collect but not remove)
+                    // specific logic would go here.
+                } else { // It's not transponivel, hero is on it. This implies a collision with a solid object.
+                    // Hero's movement validation (ehPosicaoValida) should prevent this state for non-transponivel objects.
+                    // If it's also an assassin (e.g. a solid spike trap)
+                    if (pIesimoPersonagem.isbAssasino()) {
+                        hero.setPosicao(spawn.getLinha(), spawn.getColuna());
+                        // Consider if game should 'break' or continue processing other collisions this frame
+                    }
+                }
+            }
+            // This handles cases where hero is on the same spot as an assassin character,
+            // irrespective of transponibility (e.g., Fogo is transponivel but assassin).
+            // This might be slightly redundant if the above block catches all assassin cases,
+            // but ensures assassins are processed.
+            if (pIesimoPersonagem.isbAssasino() && hero.getPosicao().igual(pIesimoPersonagem.getPosicao())) {
+                // Check if pIesimoPersonagem was already removed by the iterator in a previous condition.
+                // This is tricky. If it was removed, hero shouldn't interact with it.
+                // To be fully safe, after hero position reset, you might want to re-evaluate or break.
+                // For simplicity, current iterator pattern means pIesimoPersonagem is valid for this check
+                // if not removed above.
+                hero.setPosicao(spawn.getLinha(), spawn.getColuna());
+                // Original code had 'break;' here. If hero dying should stop all further interactions
+                // in this tick, then 'break;' might be appropriate for the outer loop,
+                // or a flag should be set.
+            }
+        }
     }
 
     /* Retorna true se a posição p é válida para o Hero em relação a todos os personagens no array */

@@ -124,23 +124,49 @@ public class Fase1 extends Tela {
         }
 
         if (!this.faseAtual.isEmpty()) {
+            this.isProcessingEntities = true;
+
+
             this.cj.desenhaTudo(faseAtual);
+
+
+            this.applyPendingModifications();
+
+
             this.cj.processaTudo(faseAtual);
 
-            for(Moeda c : moedas) {
-                if( c.isCatched() ){
-                    moedas.remove(c);
+
+
+            this.applyPendingModifications();
+
+
+
+            ArrayList<Moeda> moedasARemover = new ArrayList<>();
+            for (Moeda c : moedas) {
+                if (c.isCatched()) {
+                    moedasARemover.add(c);
                 }
             }
-            if (moedas.isEmpty()){
+            if (!moedasARemover.isEmpty()) {
+                moedas.removeAll(moedasARemover);
+            }
+
+
+            if (moedas.isEmpty()) {
                 this.chave.setImage("KeyIcons1.png");
             }
-            if (  hero.getPosicao().igual(chave.getPosicao()) && moedas.isEmpty()) {
-                Save.saveProgress(1);
+            if (hero.getPosicao().igual(chave.getPosicao()) && moedas.isEmpty()) {
+                Save.saveProgress(getNumFase());
+                this.isProcessingEntities = false;
+                this.applyPendingModifications();
                 carregarMenu();
+                return;
             }
+
+            this.isProcessingEntities = false;
             this.atualizaCamera();
         }
+
         g.dispose();
         g2.dispose();
         if (!getBufferStrategy().contentsLost()) {

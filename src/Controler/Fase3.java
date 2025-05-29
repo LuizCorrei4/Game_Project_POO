@@ -117,10 +117,11 @@ public class Fase3 extends Tela{
     @Override
     public void paint(Graphics gOld) {
         Graphics g = this.getBufferStrategy().getDrawGraphics();
+        if (g == null) return; // Adicionado para segurança
 
         g2 = g.create(getInsets().left, getInsets().top, getWidth() - getInsets().right, getHeight() - getInsets().top);
 
-
+        // Desenha o cenário de fundo
         for (int i = 0; i < Consts.RES; i++) {
             for (int j = 0; j < Consts.RES; j++) {
                 int mapaLinha = cameraLinha + i;
@@ -141,43 +142,61 @@ public class Fase3 extends Tela{
         }
 
         if (!this.faseAtual.isEmpty()) {
+            this.isProcessingEntities = true;
+
             this.cj.desenhaTudo(faseAtual);
+
+            this.applyPendingModifications();
+
             this.cj.processaTudo(faseAtual);
+
+            this.applyPendingModifications();
 
             Teletransporte t1 = null;
             Teletransporte t2 = null;
-
-
-            for(int i = 0; i<this.faseAtual.size(); i++) {
-                if(faseAtual.get(i) instanceof Teletransporte) {
-                    t1 = (Teletransporte) faseAtual.get(i);
-                    t2 = (Teletransporte) faseAtual.get(i+1);
-                    break;
+            for(int i = 0; i < this.faseAtual.size(); i++) {
+                Personagem p = this.faseAtual.get(i);
+                if(p instanceof Teletransporte) {
+                    if (t1 == null) {
+                        t1 = (Teletransporte) p;
+                    } else {
+                        t2 = (Teletransporte) p;
+                        break;
+                    }
                 }
             }
 
-            assert t1 != null;
-            if (hero.getPosicao().igual(t1.getPosicao())) {
-                hero.setPosicao(t2.getPosicao().getLinha(), t2.getPosicao().getColuna()+1);//t1 para t2
+            if (t1 != null && t2 != null && hero != null) {
+                if (hero.getPosicao().igual(t1.getPosicao())) {
+                    hero.setPosicao(t2.getPosicao().getLinha(), t2.getPosicao().getColuna() + 1);
+                } else if (hero.getPosicao().igual(t2.getPosicao())){
+                    hero.setPosicao(t1.getPosicao().getLinha(), t1.getPosicao().getColuna() - 1);
+                }
             }
-            if (hero.getPosicao().igual(t2.getPosicao())){
-                hero.setPosicao(t1.getPosicao().getLinha(), t1.getPosicao().getColuna()-1);
-            }
 
-
-
+            ArrayList<Moeda> moedasARemover = new ArrayList<>();
             for(Moeda c : moedas) {
-                if( c.isCatched() ){
-                    moedas.remove(c);
+                if(c.isCatched()){
+                    moedasARemover.add(c);
                 }
             }
-            if (moedas.isEmpty()){
+            if (!moedasARemover.isEmpty()) {
+                moedas.removeAll(moedasARemover);
+            }
+
+            if (moedas.isEmpty() && this.chave != null){
                 this.chave.setImage("KeyIcons3.png");
             }
-            if (hero.getPosicao().igual(chave.getPosicao()) && moedas.isEmpty()) {
+
+            if (hero != null && this.chave != null && hero.getPosicao().igual(chave.getPosicao()) && moedas.isEmpty()) {
                 Save.saveProgress(3);
+                this.isProcessingEntities = false;
+                this.applyPendingModifications();
                 carregarMenu();
+                return;
             }
+
+            this.isProcessingEntities = false;
             this.atualizaCamera();
         }
 
@@ -187,6 +206,7 @@ public class Fase3 extends Tela{
             getBufferStrategy().show();
         }
     }
+
     @Override
     public int getNumFase(){
         return 3;

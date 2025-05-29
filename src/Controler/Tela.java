@@ -3,7 +3,7 @@ package Controler;
 
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
-import Auxiliar.GameState; // Import the GameState class
+import Auxiliar.GameState;
 import Auxiliar.PersonagemSaver;
 import Auxiliar.Posicao;
 import Modelo.*;
@@ -32,13 +32,17 @@ public abstract class Tela extends javax.swing.JFrame implements KeyListener {
 
     protected final Posicao spawn = new Posicao(1, 1);
     protected ArrayList<Personagem> faseAtual;
-    protected Hero hero; // Declared here
+    protected Hero hero;
     protected ControleDeJogo cj = new ControleDeJogo(spawn);
     protected Graphics g2;
     protected int cameraLinha = 0;
     protected int cameraColuna = 0;
     protected Chave chave;
     protected ArrayList<Moeda> moedas;
+
+    protected ArrayList<Personagem> pendingAdditions = new ArrayList<>();
+    protected ArrayList<Personagem> pendingRemovals = new ArrayList<>();
+    protected boolean isProcessingEntities = false;
 
     public static final String SAVE_GAME_FILE = "gameState.dat";
     private Timer gameTimer;
@@ -52,33 +56,41 @@ public abstract class Tela extends javax.swing.JFrame implements KeyListener {
 
         faseAtual = new ArrayList<Personagem>();
 
-        // Initialize hero BEFORE any method that might use it (like atualizaCamera) is called.
-        // Subclasses (Menu, FaseX) will set its position and add it to faseAtual.
-        hero = new Hero("player1_right2.png"); // Default image, ensures hero is not null
+        hero = new Hero("player1_right2.png");
 
-        this.atualizaCamera(); // Called after hero is guaranteed to be non-null
+        this.atualizaCamera();
 
-        // Drag and drop setup from original code
+
         NaveInimiga inimigo = new NaveInimiga("Spaceship4.png", "projetil3.png", Consts.UP);
         PersonagemSaver.salvarPersonagem(inimigo, "arquivos_zip_dos_objetos/nave_inimiga_up.zip");
+
         BichinhoVaiVemHorizontal bichinhoHo = new BichinhoVaiVemHorizontal("Sun.png");
         PersonagemSaver.salvarPersonagem(bichinhoHo, "arquivos_zip_dos_objetos/sol_bichinhohorizontal.zip");
+
         BichinhoVaiVemVertical bichinhoVe = new BichinhoVaiVemVertical("RocketGrey.png");
         PersonagemSaver.salvarPersonagem(bichinhoVe, "arquivos_zip_dos_objetos/foguete_bichinhovertical.zip");
+
         BichinhoVaiVemHorizontal bichinhoHo1 = new BichinhoVaiVemHorizontal("Earth.png");
         PersonagemSaver.salvarPersonagem(bichinhoHo1, "arquivos_zip_dos_objetos/terra_bichinhohorizontal.zip");
+
         BichinhoVaiVemVertical bichinhoVe1 = new BichinhoVaiVemVertical("Saturn2.png");
         PersonagemSaver.salvarPersonagem(bichinhoVe1, "arquivos_zip_dos_objetos/saturno_bichinhovertical.zip");
+
         ZigueZague zig = new ZigueZague("UfoBlue.png");
         PersonagemSaver.salvarPersonagem(zig, "arquivos_zip_dos_objetos/alien_azul_zigzag.zip");
+
         ZigueZague zig1 = new ZigueZague("UfoGrey.png");
         PersonagemSaver.salvarPersonagem(zig1, "arquivos_zip_dos_objetos/alien_cinza_zigzag.zip");
+
         NaveInimiga nv1 = new NaveInimiga("Spaceship2_right.png", "projetil1_right.png", Consts.RIGHT);
         PersonagemSaver.salvarPersonagem(nv1, "arquivos_zip_dos_objetos/nave_inimiga_right.zip");
+
         NaveInimiga nv2 = new NaveInimiga("Spaceship2_left.png", "projetil1_left.png", Consts.LEFT);
         PersonagemSaver.salvarPersonagem(nv2, "arquivos_zip_dos_objetos/nave_inimiga_left.zip");
+
         NaveInimiga nv3 = new NaveInimiga("Spaceship2_down.png", "projetil1_down.png", Consts.DOWN);
         PersonagemSaver.salvarPersonagem(nv3, "arquivos_zip_dos_objetos/nave_inimiga_down.zip");
+
         this.arrasta();
     }
 
@@ -98,7 +110,7 @@ public abstract class Tela extends javax.swing.JFrame implements KeyListener {
                             }
                         }
                         dtde.dropComplete(true);
-                        // repaint(); // Repaint is handled by game loop
+                        // repaint();
                     } else {
                         dtde.rejectDrop();
                     }
@@ -120,9 +132,9 @@ public abstract class Tela extends javax.swing.JFrame implements KeyListener {
                 if (!entry.isDirectory() && entry.getName().endsWith(".ser")) {
                     ObjectInputStream ois = new ObjectInputStream(zis);
                     Personagem personagem = (Personagem) ois.readObject();
-                    // Not closing ois here to avoid closing zis prematurely. zis is closed by try-with-resources.
 
-                    Point dropPoint = getMousePosition(); // Make sure frame is visible and mouse is over it
+
+                    Point dropPoint = getMousePosition();
                     if (dropPoint != null) {
                         int coluna = (dropPoint.x - getInsets().left) / Consts.CELL_SIDE + cameraColuna;
                         int linha = (dropPoint.y - getInsets().top) / Consts.CELL_SIDE + cameraLinha;
@@ -230,7 +242,7 @@ public abstract class Tela extends javax.swing.JFrame implements KeyListener {
             ((TelaFinal) this).hero = this.hero;
         }
 
-        // Sobrescreve "save.dat" com a lista de fasesCompletadas do GameState carregado
+        // Sobrescreve "save.dat" com a lista de fases completas do gamestate
         if (state.fasesCompletadas != null) {
             try (FileWriter writer = new FileWriter(Save.SAVE_FILE)) { // Abre no modo de sobrescrita
                 for (int faseId : state.fasesCompletadas) {
@@ -272,13 +284,27 @@ public abstract class Tela extends javax.swing.JFrame implements KeyListener {
     }
 
     public void addPersonagem(Personagem umPersonagem) {
-        if (umPersonagem != null && !faseAtual.contains(umPersonagem)) {
-            faseAtual.add(umPersonagem);
+        if (umPersonagem != null) {
+            if (isProcessingEntities) {
+                if (!faseAtual.contains(umPersonagem) && !pendingAdditions.contains(umPersonagem)) {
+                    pendingAdditions.add(umPersonagem);
+                }
+            } else {
+                if (!faseAtual.contains(umPersonagem)) {
+                    faseAtual.add(umPersonagem);
+                }
+            }
         }
     }
 
     public void removePersonagem(Personagem umPersonagem) {
-        faseAtual.remove(umPersonagem);
+        if (isProcessingEntities) {
+            if (!pendingRemovals.contains(umPersonagem)) {
+                pendingRemovals.add(umPersonagem);
+            }
+        } else {
+            faseAtual.remove(umPersonagem);
+        }
     }
 
     public Graphics getGraphicsBuffer() {
@@ -288,20 +314,19 @@ public abstract class Tela extends javax.swing.JFrame implements KeyListener {
     @Override
     public void paint(Graphics gOld) {
         if (this.getBufferStrategy() == null) {
-            this.createBufferStrategy(2); // Essential for custom painting
+            this.createBufferStrategy(2);
             return;
         }
         Graphics g = this.getBufferStrategy().getDrawGraphics();
-        if (g == null) return; // Should not happen if buffer strategy is valid
+        if (g == null) return;
 
         g2 = g.create(getInsets().left, getInsets().top, getWidth() - getInsets().right, getHeight() - getInsets().top);
 
         int currentWorldHeight = Consts.MUNDO_ALTURA;
         int currentWorldWidth = Consts.MUNDO_LARGURA;
-        String bgImageName = "bg_02_v.png"; // Default background
+        String bgImageName = "bg_02_v.png";
 
-        // Menu and TelaFinal have their own paint methods that will draw their specific backgrounds.
-        // For FaseX, draw the default background.
+
         if (!(this instanceof Menu || this instanceof TelaFinal)) {
             for (int i = 0; i < Consts.RES; i++) {
                 for (int j = 0; j < Consts.RES; j++) {
@@ -319,7 +344,6 @@ public abstract class Tela extends javax.swing.JFrame implements KeyListener {
                 }
             }
         }
-        // If it's Menu or TelaFinal, their overridden paint() method will be called, handling their specific background.
 
         if (!this.faseAtual.isEmpty()) {
             this.cj.desenhaTudo(faseAtual);
@@ -357,7 +381,7 @@ public abstract class Tela extends javax.swing.JFrame implements KeyListener {
     }
 
     protected void atualizaCamera() {
-        if (hero == null) { // Safeguard
+        if (hero == null) {
             // Logger.getLogger(Tela.class.getName()).log(Level.WARNING, "atualizaCamera called with null hero in " + this.getClass().getName());
             return;
         }
@@ -376,7 +400,6 @@ public abstract class Tela extends javax.swing.JFrame implements KeyListener {
 
     public void go() {
 
-        // Lógica de apagar a fase do save.dat
         Save.removeFase(this.getNumFase());
 
         if (gameTimer != null) {
@@ -401,7 +424,7 @@ public abstract class Tela extends javax.swing.JFrame implements KeyListener {
         } else if (e.getKeyCode() == KeyEvent.VK_E) {
             System.exit(0);
         } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            if (Save.allFasesCompleted() && (this instanceof Menu)) { // From game to TelaFinal
+            if (Save.allFasesCompleted() && (this instanceof Menu)) {
                 this.setVisible(false);
                 if (gameTimer != null) gameTimer.cancel();
                 this.dispose();
@@ -409,16 +432,16 @@ public abstract class Tela extends javax.swing.JFrame implements KeyListener {
                 telafinal.setVisible(true);
                 telafinal.createBufferStrategy(2);
                 telafinal.go();
-                // Timer to exit from TelaFinal
+
                 javax.swing.Timer exitTimer = new javax.swing.Timer(8500, (evt) -> System.exit(0));
                 exitTimer.setRepeats(false);
                 exitTimer.start();
                 return;
-            } else if (this instanceof TelaFinal) { // Exiting from TelaFinal via ESC
+            } else if (this instanceof TelaFinal) {
                 System.exit(0);
                 return;
             }
-            // For all other cases (in a phase, or in Menu and not all phases complete)
+
             carregarMenu();
             return;
         } else if (e.getKeyCode() == KeyEvent.VK_R) {
@@ -440,11 +463,11 @@ public abstract class Tela extends javax.swing.JFrame implements KeyListener {
         }
 
         if (hero == null) {
-            return; // No hero to control
+            return;
         }
 
         String newImage = hero.getsNomeImagePNG();
-        boolean moved = true; // Assume a key press related to movement will attempt a move
+        boolean moved = true;
 
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP:
@@ -477,17 +500,17 @@ public abstract class Tela extends javax.swing.JFrame implements KeyListener {
             this.atualizaCamera();
             this.setTitle("-> Cell: " + (hero.getPosicao().getColuna()) + ", " + (hero.getPosicao().getLinha()));
         }
-        // repaint(); // Game loop handles repaints
+        // repaint();
     }
 
     void initComponents() {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("RunSpace");
-        // setAlwaysOnTop(true); // This can be annoying for debugging, enable if desired for gameplay
+        // setAlwaysOnTop(true);
         setAutoRequestFocus(false);
         setResizable(false);
 
-        // Using a fixed size initially based on RES, can also use pack() after components added
+
         setPreferredSize(new Dimension(Consts.RES * Consts.CELL_SIDE + getInsets().left + getInsets().right,
                 Consts.RES * Consts.CELL_SIDE + getInsets().top + getInsets().bottom));
 
@@ -501,8 +524,8 @@ public abstract class Tela extends javax.swing.JFrame implements KeyListener {
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGap(0, Consts.RES * Consts.CELL_SIDE, Short.MAX_VALUE)
         );
-        pack(); // Recalculates size based on preferred sizes or explicit settings
-        setLocationRelativeTo(null); // Center on screen
+        pack();
+        setLocationRelativeTo(null);
     }
 
     @Override
@@ -520,6 +543,21 @@ public abstract class Tela extends javax.swing.JFrame implements KeyListener {
             gameTimer = null;
         }
         super.dispose();
+    }
+
+    protected void applyPendingModifications() {
+        if (!pendingAdditions.isEmpty()) {
+            for (Personagem p : pendingAdditions) {
+                if (!faseAtual.contains(p)) {
+                    faseAtual.add(p);
+                }
+            }
+            pendingAdditions.clear();
+        }
+        if (!pendingRemovals.isEmpty()) {
+            faseAtual.removeAll(pendingRemovals);
+            pendingRemovals.clear();
+        }
     }
 
     public abstract int getNumFase();
