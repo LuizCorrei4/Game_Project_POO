@@ -29,7 +29,24 @@ public class Save {
             System.err.println("Erro ao salvar progresso: " + e.getMessage());
         }
     }
+    public static void removeFase(int faseParaRemover) {
+        try {
+            // Carrega o progresso atual
+            List<Integer> fasesCompletas = Save.loadAllCompletedFases();
 
+            // Remove a fase especificada
+            fasesCompletas.removeIf(fase -> fase == faseParaRemover);
+
+            // Salva a lista atualizada
+            FileWriter writer = new FileWriter("save.dat");
+            for (int fase : fasesCompletas) {
+                writer.write(fase + "\n");
+            }
+            writer.close();
+        } catch (IOException e) {
+            System.err.println("Erro ao remover fase do progresso: " + e.getMessage());
+        }
+    }
     public static List<Integer> loadAllCompletedFases() {
         List<Integer> fasesCompletas = new ArrayList<>();
         try {

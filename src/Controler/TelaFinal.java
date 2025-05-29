@@ -178,6 +178,9 @@ public class TelaFinal extends Tela{
         cameraColuna = Math.max(0, Math.min(coluna - Consts.RES / 2, Consts.MUNDO_MENU_LARGURA - Consts.RES));
     }
 
+    public int getNumFase(){
+        return -1;
+    }
 
 
 }

@@ -1,30 +1,25 @@
+// File: Modelo/Chave.java
 package Modelo;
 
+import javax.swing.ImageIcon; // Not strictly needed here if relying on Personagem's loading
 
 public class Chave extends Personagem{
-    protected boolean isTranslucent;
+    // protected boolean isTranslucent; // This state is managed by changing the image file name
 
     public Chave(String sNomeImagePNG) {
-        super(sNomeImagePNG);
+        super(sNomeImagePNG); // sNomeImagePNG stored by Personagem
         this.bTransponivel = true;
         this.bMortal = false;
-        this.isTranslucent = true;
+        // this.isTranslucent = sNomeImagePNG.contains("_translucent"); // Infer from name if needed
     }
 
+    @Override
     public void autoDesenho() {
         super.autoDesenho();
     }
 
-    /*public boolean isTranslucent() {
-        return isTranslucent;
-    }
-
-    public void translucentOff() {
-        this.isTranslucent = false;
-    }*/
-
-
-    public void setImage(String image){
-        this.iImage = this.carregarImagemRedimensionada(image);
+    public void setImage(String imageName){
+        this.sNomeImagePNG = imageName; // Update stored name
+        this.iImage = this.carregarImagemRedimensionada(imageName);
     }
 }

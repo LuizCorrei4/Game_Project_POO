@@ -10,37 +10,32 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.swing.ImageIcon;
-
+import java.io.ObjectInputStream; // Import for readObject
 
 public abstract class Personagem implements Serializable {
 
-    protected ImageIcon iImage;       // Sprite do personagem
-    protected Posicao pPosicao;       // Posição atual (linha, coluna) no grid
-    protected boolean bTransponivel;  // Pode atravessar outros personagens?
-    protected boolean bMortal;        // Se verdadeiro, ao colidir, personagem é removido
+    protected transient ImageIcon iImage; // Make ImageIcon transient
+    protected String sNomeImagePNG;      // Ensure this field exists and is used
+    protected Posicao pPosicao;
+    protected boolean bTransponivel;
+    protected boolean bMortal;
     protected boolean bAssasino;
-    public boolean isbMortal() {
-        return bMortal;
-    }
 
-    /**
-     * Construtor recebe nome de arquivo de imagem e monta um ImageIcon do tamanho CELL_SIDE.
-     */
     protected Personagem(String sNomeImagePNG) {
+        this.sNomeImagePNG = sNomeImagePNG; // Store the image name
         this.pPosicao = new Posicao(1, 1);
         this.bTransponivel = true;
         this.bMortal = false;
         this.bAssasino = false;
-        this.iImage = carregarImagemRedimensionada(sNomeImagePNG);
+        this.iImage = carregarImagemRedimensionada(sNomeImagePNG); // Load initial image
     }
 
-    /**
-     * Carrega uma imagem a partir do nome do arquivo e redimensiona para o tamanho da célula.
-     * @param nomeImagem Nome do arquivo PNG da imagem
-     * @return ImageIcon redimensionado
-     */
+    public String getsNomeImagePNG() {
+        return sNomeImagePNG;
+    }
 
     protected ImageIcon carregarImagemRedimensionada(String nomeImagem) {
+        if (nomeImagem == null) return null;
         try {
             String caminhoImagem = new java.io.File(".").getCanonicalPath() + Consts.PATH + nomeImagem;
             ImageIcon iconOriginal = new ImageIcon(caminhoImagem);
@@ -54,18 +49,24 @@ public abstract class Personagem implements Serializable {
 
             Graphics g = imagemRedimensionada.createGraphics();
             g.drawImage(imagemOriginal, 0, 0, Consts.CELL_SIDE, Consts.CELL_SIDE, null);
-            g.dispose(); // libera recursos do gráfico
+            g.dispose();
 
             return new ImageIcon(imagemRedimensionada);
 
         } catch (IOException e) {
-            System.out.println("Erro ao carregar imagem: " + e.getMessage());
+            System.out.println("Erro ao carregar imagem: " + nomeImagem + " -> " + e.getMessage());
             return null;
         }
     }
 
-
-
+    // Custom deserialization logic
+    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        ois.defaultReadObject(); // Reads non-transient fields (like sNomeImagePNG)
+        // Re-initialize transient fields
+        if (this.sNomeImagePNG != null) {
+            this.iImage = carregarImagemRedimensionada(this.sNomeImagePNG);
+        }
+    }
 
     public Posicao getPosicao() {
         return pPosicao;
@@ -75,24 +76,26 @@ public abstract class Personagem implements Serializable {
         return bTransponivel;
     }
 
+    public boolean isbMortal() {
+        return bMortal;
+    }
+
     public boolean isbAssasino() { return bAssasino; }
+
     public void setbTransponivel(boolean bTransponivel) {
         this.bTransponivel = bTransponivel;
     }
 
-    /** Desenha o sprite na tela, usando utilitário de desenho. */
     public void autoDesenho(){
         Desenho.desenhar(this.iImage,
                 this.pPosicao.getColuna(),
                 this.pPosicao.getLinha());
     }
 
-    // Atualiza posição no grid
     public boolean setPosicao(int linha, int coluna) {
         return pPosicao.setPosicao(linha, coluna);
     }
 
-    // Movimentações simples delegadas a Posicao
     public boolean moveUp()    { return this.pPosicao.moveUp(); }
     public boolean moveDown()  { return this.pPosicao.moveDown(); }
     public boolean moveRight() { return this.pPosicao.moveRight(); }

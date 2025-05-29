@@ -2,6 +2,9 @@ package Controler;
 import Auxiliar.Consts;
 import Modelo.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -11,7 +14,7 @@ import javax.swing.JOptionPane;  // Para a classe JOptionPane
 
 
 
-public class Menu extends Tela{
+public class Menu extends Tela implements KeyListener {
 
     private ArrayList<Decoracao> checkmarks = new ArrayList<>();
     protected boolean showGameCompleted = false;
@@ -186,6 +189,7 @@ public class Menu extends Tela{
         switch(numeroFase) {
             case 1:
                 fase = new Fase1();
+
                 break;
             case 2:
                 fase = new Fase2();
@@ -283,5 +287,11 @@ public class Menu extends Tela{
 
         cameraLinha = Math.max(0, Math.min(linha - Consts.RES / 2, Consts.MUNDO_MENU_ALTURA - Consts.RES));
         cameraColuna = Math.max(0, Math.min(coluna - Consts.RES / 2, Consts.MUNDO_MENU_LARGURA - Consts.RES));
+    }
+
+
+
+    public int getNumFase(){
+        return 0;
     }
 }

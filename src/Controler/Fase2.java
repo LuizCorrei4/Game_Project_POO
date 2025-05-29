@@ -160,4 +160,8 @@ public class Fase2 extends Tela{
         }
     }
 
+    @Override
+    public int getNumFase(){
+        return 2;
+    }
 }

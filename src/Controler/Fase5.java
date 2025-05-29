@@ -162,5 +162,8 @@ public class Fase5 extends Tela{
             getBufferStrategy().show();
         }
     }
-
+    @Override
+    public int getNumFase(){
+        return 5;
+    }
 }
